@@ -54,11 +54,11 @@ Goals & Deliverables
 ====================
 We have three tiers of goals in this project.
 
-..**Tier 1** Functional software achieving off-line augmented reality road marking with a set of collected images. The road name is prescribed in the App. 
+...**Tier 1** Functional software achieving off-line augmented reality road marking with a set of collected images. The road name is prescribed in the App. 
 
-..**Tier 2** Functional software achieving real-time augmented reality road marking on select road. e.g. the App works for Forbes avenue from CMU to University of Pittsburgh.
+...**Tier 2** Functional software achieving real-time augmented reality road marking on select road. e.g. the App works for Forbes avenue from CMU to University of Pittsburgh.
 
-..**Tier 3** Functional software achieving real-time augmented reality road marking for all roads that are listed in the GIS API.
+...**Tier 3** Functional software achieving real-time augmented reality road marking for all roads that are listed in the GIS API.
 
 Work Breakdown
 ==============
