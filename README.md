@@ -1,9 +1,8 @@
-# cv_apps_project
 
 Smart Phone Real-Time Augmented Reality Based In-car Navigation System
 ======================================================================
 
-Authors
+Team
 -------
 Yuhan Long
 
@@ -11,11 +10,10 @@ Joonwhee Park
 
 Johnny Wang
 
-Professor
----------
+##Professor
 Simon Lucey
 
-TA
+##TA
 ---
 Chen-Hsuan Lin
 
