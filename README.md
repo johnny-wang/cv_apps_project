@@ -10,11 +10,10 @@ Joonwhee Park
 
 Johnny Wang
 
-##Professor
+###Professor
 Simon Lucey
 
-##TA
----
+###TA
 Chen-Hsuan Lin
 
 Summary
@@ -65,11 +64,11 @@ Work Breakdown
 ==============
 Since this is a project with considerable technical difficulties and development work, we have a team of three. The work breakdown is shown as follows:
 
-Member 1: Plane estimation; Homography estimation;
+**Member 1**: Plane estimation; Homography estimation;
 
-Member 2: Image classification; Road structure analysis
+**Member 2**: Image classification; Road structure analysis
 
-Member 3: API study; Software architecture design; GIS/video/visualization code design. 
+**Member 3**: API study; Software architecture design; GIS/video/visualization code design. 
 
 Schedule
 ========
