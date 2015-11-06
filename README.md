@@ -10,10 +10,10 @@ Joonwhee Park
 
 Johnny Wang
 
-###Professor
+####Professor
 Simon Lucey
 
-###TA
+####TA
 Chen-Hsuan Lin
 
 Summary
