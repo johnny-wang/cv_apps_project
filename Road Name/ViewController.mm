@@ -12,8 +12,10 @@
 
 
 using namespace cv;
+using namespace std;
+
 @interface ViewController () {
-    UIImageView *image_view;
+    UIImageView *imageView_;
     NSString *road_name;
 }
 
@@ -31,16 +33,29 @@ using namespace cv;
     Mat roadImage = [self cvMatFromUIImage:inputImage];
     
     /** convert the road name to a image */
-    Mat textImage = [self cvMatFromString:road_name];
+    Mat textImage = cvMatFromString_cv("FORBES");
     
+    /** Initialize road name boundary points */
+    /** [TODO] Automate this */
+    vector<Point2f> pts_from={Point2f(0,0),Point2f(0,textImage.rows),Point2f(textImage.cols,0),Point2f(textImage.cols,textImage.rows)};
+    vector<Point2f> pts_to={Point2f(500,456),Point2f(392,522),Point2f(805,450),Point2f(840,517)};
     
-    
-    
-    
-    
-    
+    /** Find homography */
+    Mat H;
+    fitHomography(pts_from, pts_to, H);
+    cout<<H<<endl;
 
+    /** Project the warped road name */
+    Mat resultImage;
+    projHomography(roadImage, textImage, resultImage, H);
+    
+    
+    /** Display the image */
+    imageView_ = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:imageView_];
+    imageView_.contentMode = UIViewContentModeScaleAspectFit;
 
+    imageView_.image = [self UIImageFromCVMat:resultImage];
 }
 
 
@@ -49,6 +64,7 @@ using namespace cv;
 {
     /** This function is for convering the text into the cvMat format 
      * There is probably a better solution to use opencv put text function
+     * Not used in current code
      */
     Mat stringImage;
     return stringImage;

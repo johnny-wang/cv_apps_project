@@ -18,10 +18,10 @@ using namespace std;
 
 
 // Function for fitting a homography warp from four points
-void fitHomography(const vector<Point2f> &fromPts, const vector<Point2f> &toPts, const Mat homography_mat);
+void fitHomography(const vector<Point2f> &fromPts, const vector<Point2f> &toPts,  Mat &homography_mat);
 
 // Function for projecting a homography warp
-void projHomography(const Mat &srcImg, const Mat &tarImg, const Mat homography_mat);
+void projHomography( Mat &srcImg, const Mat &tarImg, Mat &resultImg, const Mat &homography_mat);
 
 // convert matrix to string
 Mat cvMatFromString_cv(const string &text);
