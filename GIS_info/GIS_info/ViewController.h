@@ -11,8 +11,11 @@
 #import <AVFoundation/AVFoundation.h>
 
 @interface ViewController : UIViewController <CLLocationManagerDelegate> {
-CLLocationManager *locationManager;
+    CLLocationManager *locationManager;
+    
+    AVPlayer *player;
 }
 
+ 
 @end
 

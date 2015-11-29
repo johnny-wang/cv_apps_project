@@ -23,19 +23,18 @@
     
     [super viewDidLoad];
     
-    /*
     NSString *filepath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"mp4"];
     NSURL *fileURL = [NSURL fileURLWithPath:filepath];
-    self.avPlayer = [AVPlayer playerWithURL:fileURL];
+    self->player = [AVPlayer playerWithURL:fileURL];
     
-    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:self.avPlayer];
-    self.avPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:self->player];
+    self->player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     layer.frame = CGRectMake(0, 0, 1024, 768);
     [self.view.layer addSublayer: layer];
     
-    [self.avPlayer play];
-     */
+    [self->player play];
     
+/*
     [super viewDidLoad];
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
@@ -43,7 +42,7 @@
     [locationManager requestWhenInUseAuthorization];
     [locationManager startMonitoringSignificantLocationChanges];
     [locationManager startUpdatingLocation];
-
+*/
 }
 
 - (void)locationManager:(CLLocationManager *)manager
