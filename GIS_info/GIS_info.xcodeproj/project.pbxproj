@@ -1,0 +1,431 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2D0270811C0A9D6100AF4B53 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0270801C0A9D6100AF4B53 /* main.m */; };
+		2D0270841C0A9D6100AF4B53 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0270831C0A9D6100AF4B53 /* AppDelegate.m */; };
+		2D0270871C0A9D6100AF4B53 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0270861C0A9D6100AF4B53 /* ViewController.m */; };
+		2D02708A1C0A9D6100AF4B53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D0270881C0A9D6100AF4B53 /* Main.storyboard */; };
+		2D02708C1C0A9D6100AF4B53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D02708B1C0A9D6100AF4B53 /* Assets.xcassets */; };
+		2D02708F1C0A9D6100AF4B53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D02708D1C0A9D6100AF4B53 /* LaunchScreen.storyboard */; };
+		2D02709A1C0A9D6100AF4B53 /* GIS_infoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0270991C0A9D6100AF4B53 /* GIS_infoUITests.m */; };
+		2D0270A51C0A9DBA00AF4B53 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D0270A41C0A9DBA00AF4B53 /* CoreLocation.framework */; };
+		2D0270A71C0B8D0300AF4B53 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D0270A61C0B8D0300AF4B53 /* AVFoundation.framework */; };
+		2D0270AB1C0B915100AF4B53 /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2D0270AA1C0B915100AF4B53 /* test.mp4 */; settings = {ASSET_TAGS = (); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2D0270961C0A9D6100AF4B53 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D0270741C0A9D6100AF4B53 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D02707B1C0A9D6100AF4B53;
+			remoteInfo = GIS_info;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2D02707C1C0A9D6100AF4B53 /* GIS_info.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GIS_info.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D0270801C0A9D6100AF4B53 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2D0270821C0A9D6100AF4B53 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		2D0270831C0A9D6100AF4B53 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		2D0270851C0A9D6100AF4B53 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		2D0270861C0A9D6100AF4B53 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		2D0270891C0A9D6100AF4B53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2D02708B1C0A9D6100AF4B53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2D02708E1C0A9D6100AF4B53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2D0270901C0A9D6100AF4B53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2D0270951C0A9D6100AF4B53 /* GIS_infoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GIS_infoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D0270991C0A9D6100AF4B53 /* GIS_infoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GIS_infoUITests.m; sourceTree = "<group>"; };
+		2D02709B1C0A9D6100AF4B53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2D0270A41C0A9DBA00AF4B53 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		2D0270A61C0B8D0300AF4B53 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		2D0270AA1C0B915100AF4B53 /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2D0270791C0A9D6100AF4B53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D0270A71C0B8D0300AF4B53 /* AVFoundation.framework in Frameworks */,
+				2D0270A51C0A9DBA00AF4B53 /* CoreLocation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D0270921C0A9D6100AF4B53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2D0270731C0A9D6100AF4B53 = {
+			isa = PBXGroup;
+			children = (
+				2D0270A61C0B8D0300AF4B53 /* AVFoundation.framework */,
+				2D0270A41C0A9DBA00AF4B53 /* CoreLocation.framework */,
+				2D02707E1C0A9D6100AF4B53 /* GIS_info */,
+				2D0270981C0A9D6100AF4B53 /* GIS_infoUITests */,
+				2D02707D1C0A9D6100AF4B53 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2D02707D1C0A9D6100AF4B53 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2D02707C1C0A9D6100AF4B53 /* GIS_info.app */,
+				2D0270951C0A9D6100AF4B53 /* GIS_infoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2D02707E1C0A9D6100AF4B53 /* GIS_info */ = {
+			isa = PBXGroup;
+			children = (
+				2D0270821C0A9D6100AF4B53 /* AppDelegate.h */,
+				2D0270831C0A9D6100AF4B53 /* AppDelegate.m */,
+				2D0270851C0A9D6100AF4B53 /* ViewController.h */,
+				2D0270861C0A9D6100AF4B53 /* ViewController.m */,
+				2D0270881C0A9D6100AF4B53 /* Main.storyboard */,
+				2D02708B1C0A9D6100AF4B53 /* Assets.xcassets */,
+				2D02708D1C0A9D6100AF4B53 /* LaunchScreen.storyboard */,
+				2D0270901C0A9D6100AF4B53 /* Info.plist */,
+				2D02707F1C0A9D6100AF4B53 /* Supporting Files */,
+			);
+			path = GIS_info;
+			sourceTree = "<group>";
+		};
+		2D02707F1C0A9D6100AF4B53 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2D0270AA1C0B915100AF4B53 /* test.mp4 */,
+				2D0270801C0A9D6100AF4B53 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2D0270981C0A9D6100AF4B53 /* GIS_infoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				2D0270991C0A9D6100AF4B53 /* GIS_infoUITests.m */,
+				2D02709B1C0A9D6100AF4B53 /* Info.plist */,
+			);
+			path = GIS_infoUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2D02707B1C0A9D6100AF4B53 /* GIS_info */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D02709E1C0A9D6100AF4B53 /* Build configuration list for PBXNativeTarget "GIS_info" */;
+			buildPhases = (
+				2D0270781C0A9D6100AF4B53 /* Sources */,
+				2D0270791C0A9D6100AF4B53 /* Frameworks */,
+				2D02707A1C0A9D6100AF4B53 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GIS_info;
+			productName = GIS_info;
+			productReference = 2D02707C1C0A9D6100AF4B53 /* GIS_info.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2D0270941C0A9D6100AF4B53 /* GIS_infoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D0270A11C0A9D6100AF4B53 /* Build configuration list for PBXNativeTarget "GIS_infoUITests" */;
+			buildPhases = (
+				2D0270911C0A9D6100AF4B53 /* Sources */,
+				2D0270921C0A9D6100AF4B53 /* Frameworks */,
+				2D0270931C0A9D6100AF4B53 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2D0270971C0A9D6100AF4B53 /* PBXTargetDependency */,
+			);
+			name = GIS_infoUITests;
+			productName = GIS_infoUITests;
+			productReference = 2D0270951C0A9D6100AF4B53 /* GIS_infoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2D0270741C0A9D6100AF4B53 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = CV_Apps;
+				TargetAttributes = {
+					2D02707B1C0A9D6100AF4B53 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					2D0270941C0A9D6100AF4B53 = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = 2D02707B1C0A9D6100AF4B53;
+					};
+				};
+			};
+			buildConfigurationList = 2D0270771C0A9D6100AF4B53 /* Build configuration list for PBXProject "GIS_info" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2D0270731C0A9D6100AF4B53;
+			productRefGroup = 2D02707D1C0A9D6100AF4B53 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2D02707B1C0A9D6100AF4B53 /* GIS_info */,
+				2D0270941C0A9D6100AF4B53 /* GIS_infoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2D02707A1C0A9D6100AF4B53 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D02708F1C0A9D6100AF4B53 /* LaunchScreen.storyboard in Resources */,
+				2D02708C1C0A9D6100AF4B53 /* Assets.xcassets in Resources */,
+				2D02708A1C0A9D6100AF4B53 /* Main.storyboard in Resources */,
+				2D0270AB1C0B915100AF4B53 /* test.mp4 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D0270931C0A9D6100AF4B53 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2D0270781C0A9D6100AF4B53 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D0270871C0A9D6100AF4B53 /* ViewController.m in Sources */,
+				2D0270841C0A9D6100AF4B53 /* AppDelegate.m in Sources */,
+				2D0270811C0A9D6100AF4B53 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D0270911C0A9D6100AF4B53 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D02709A1C0A9D6100AF4B53 /* GIS_infoUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2D0270971C0A9D6100AF4B53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D02707B1C0A9D6100AF4B53 /* GIS_info */;
+			targetProxy = 2D0270961C0A9D6100AF4B53 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		2D0270881C0A9D6100AF4B53 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2D0270891C0A9D6100AF4B53 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		2D02708D1C0A9D6100AF4B53 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2D02708E1C0A9D6100AF4B53 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2D02709C1C0A9D6100AF4B53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2D02709D1C0A9D6100AF4B53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2D02709F1C0A9D6100AF4B53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = GIS_info/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CV-Apps.GIS-info";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2D0270A01C0A9D6100AF4B53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = GIS_info/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CV-Apps.GIS-info";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		2D0270A21C0A9D6100AF4B53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = GIS_infoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CV-Apps.GIS-infoUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = GIS_info;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		2D0270A31C0A9D6100AF4B53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = GIS_infoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "CV-Apps.GIS-infoUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = GIS_info;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D0270771C0A9D6100AF4B53 /* Build configuration list for PBXProject "GIS_info" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D02709C1C0A9D6100AF4B53 /* Debug */,
+				2D02709D1C0A9D6100AF4B53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D02709E1C0A9D6100AF4B53 /* Build configuration list for PBXNativeTarget "GIS_info" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D02709F1C0A9D6100AF4B53 /* Debug */,
+				2D0270A01C0A9D6100AF4B53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D0270A11C0A9D6100AF4B53 /* Build configuration list for PBXNativeTarget "GIS_infoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D0270A21C0A9D6100AF4B53 /* Debug */,
+				2D0270A31C0A9D6100AF4B53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2D0270741C0A9D6100AF4B53 /* Project object */;
+}
