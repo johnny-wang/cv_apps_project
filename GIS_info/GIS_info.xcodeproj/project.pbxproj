@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2D0270811C0A9D6100AF4B53 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0270801C0A9D6100AF4B53 /* main.m */; };
 		2D0270841C0A9D6100AF4B53 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0270831C0A9D6100AF4B53 /* AppDelegate.m */; };
-		2D0270871C0A9D6100AF4B53 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0270861C0A9D6100AF4B53 /* ViewController.m */; };
+		2D0270871C0A9D6100AF4B53 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2D0270861C0A9D6100AF4B53 /* ViewController.mm */; };
 		2D02708A1C0A9D6100AF4B53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D0270881C0A9D6100AF4B53 /* Main.storyboard */; };
 		2D02708C1C0A9D6100AF4B53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D02708B1C0A9D6100AF4B53 /* Assets.xcassets */; };
 		2D02708F1C0A9D6100AF4B53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D02708D1C0A9D6100AF4B53 /* LaunchScreen.storyboard */; };
@@ -17,6 +17,8 @@
 		2D0270A51C0A9DBA00AF4B53 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D0270A41C0A9DBA00AF4B53 /* CoreLocation.framework */; };
 		2D0270A71C0B8D0300AF4B53 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D0270A61C0B8D0300AF4B53 /* AVFoundation.framework */; };
 		2D0270AB1C0B915100AF4B53 /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2D0270AA1C0B915100AF4B53 /* test.mp4 */; settings = {ASSET_TAGS = (); }; };
+		2DD8D1DC1C0CCA9E00AA15DF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D1DB1C0CCA9E00AA15DF /* CoreMedia.framework */; };
+		2DD8D1DE1C0CDBBF00AA15DF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D1DD1C0CDBBF00AA15DF /* opencv2.framework */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +37,7 @@
 		2D0270821C0A9D6100AF4B53 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2D0270831C0A9D6100AF4B53 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2D0270851C0A9D6100AF4B53 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		2D0270861C0A9D6100AF4B53 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		2D0270861C0A9D6100AF4B53 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		2D0270891C0A9D6100AF4B53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2D02708B1C0A9D6100AF4B53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2D02708E1C0A9D6100AF4B53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -46,6 +48,8 @@
 		2D0270A41C0A9DBA00AF4B53 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		2D0270A61C0B8D0300AF4B53 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		2D0270AA1C0B915100AF4B53 /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
+		2DD8D1DB1C0CCA9E00AA15DF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		2DD8D1DD1C0CDBBF00AA15DF /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +57,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DD8D1DC1C0CCA9E00AA15DF /* CoreMedia.framework in Frameworks */,
 				2D0270A71C0B8D0300AF4B53 /* AVFoundation.framework in Frameworks */,
+				2DD8D1DE1C0CDBBF00AA15DF /* opencv2.framework in Frameworks */,
 				2D0270A51C0A9DBA00AF4B53 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +77,8 @@
 		2D0270731C0A9D6100AF4B53 = {
 			isa = PBXGroup;
 			children = (
+				2DD8D1DD1C0CDBBF00AA15DF /* opencv2.framework */,
+				2DD8D1DB1C0CCA9E00AA15DF /* CoreMedia.framework */,
 				2D0270A61C0B8D0300AF4B53 /* AVFoundation.framework */,
 				2D0270A41C0A9DBA00AF4B53 /* CoreLocation.framework */,
 				2D02707E1C0A9D6100AF4B53 /* GIS_info */,
@@ -94,7 +102,7 @@
 				2D0270821C0A9D6100AF4B53 /* AppDelegate.h */,
 				2D0270831C0A9D6100AF4B53 /* AppDelegate.m */,
 				2D0270851C0A9D6100AF4B53 /* ViewController.h */,
-				2D0270861C0A9D6100AF4B53 /* ViewController.m */,
+				2D0270861C0A9D6100AF4B53 /* ViewController.mm */,
 				2D0270881C0A9D6100AF4B53 /* Main.storyboard */,
 				2D02708B1C0A9D6100AF4B53 /* Assets.xcassets */,
 				2D02708D1C0A9D6100AF4B53 /* LaunchScreen.storyboard */,
@@ -223,7 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D0270871C0A9D6100AF4B53 /* ViewController.m in Sources */,
+				2D0270871C0A9D6100AF4B53 /* ViewController.mm in Sources */,
 				2D0270841C0A9D6100AF4B53 /* AppDelegate.m in Sources */,
 				2D0270811C0A9D6100AF4B53 /* main.m in Sources */,
 			);
@@ -353,6 +361,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GIS_info/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "CV-Apps.GIS-info";
@@ -364,6 +376,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GIS_info/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "CV-Apps.GIS-info";
