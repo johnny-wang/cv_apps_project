@@ -19,6 +19,8 @@
 		2DD8D2DB1C0DFE2F00AA15DF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D2DA1C0DFE2F00AA15DF /* CoreLocation.framework */; };
 		2DD8D2DD1C0DFE5000AA15DF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D2DC1C0DFE5000AA15DF /* opencv2.framework */; settings = {ASSET_TAGS = (); }; };
 		2DD8D2DF1C0DFE5900AA15DF /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D2DE1C0DFE5900AA15DF /* Accelerate.framework */; };
+		2DD8D2E31C0E006500AA15DF /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2DD8D2E21C0E006500AA15DF /* test.mp4 */; settings = {ASSET_TAGS = (); }; };
+		2DD8D2E61C0E007000AA15DF /* homographyUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DD8D2E41C0E007000AA15DF /* homographyUtil.cpp */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,9 @@
 		2DD8D2DA1C0DFE2F00AA15DF /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		2DD8D2DC1C0DFE5000AA15DF /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		2DD8D2DE1C0DFE5900AA15DF /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		2DD8D2E21C0E006500AA15DF /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
+		2DD8D2E41C0E007000AA15DF /* homographyUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = homographyUtil.cpp; path = homography/homographyUtil.cpp; sourceTree = "<group>"; };
+		2DD8D2E51C0E007000AA15DF /* homographyUtil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = homographyUtil.hpp; path = homography/homographyUtil.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +122,9 @@
 		2DD8D2B11C0DFE1300AA15DF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2DD8D2E41C0E007000AA15DF /* homographyUtil.cpp */,
+				2DD8D2E51C0E007000AA15DF /* homographyUtil.hpp */,
+				2DD8D2E21C0E006500AA15DF /* test.mp4 */,
 				2DD8D2B21C0DFE1300AA15DF /* main.m */,
 			);
 			name = "Supporting Files";
@@ -214,6 +222,7 @@
 				2DD8D2C11C0DFE1300AA15DF /* LaunchScreen.storyboard in Resources */,
 				2DD8D2BE1C0DFE1300AA15DF /* Assets.xcassets in Resources */,
 				2DD8D2BC1C0DFE1300AA15DF /* Main.storyboard in Resources */,
+				2DD8D2E31C0E006500AA15DF /* test.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +243,7 @@
 				2DD8D2B91C0DFE1300AA15DF /* ViewController.mm in Sources */,
 				2DD8D2B61C0DFE1300AA15DF /* AppDelegate.m in Sources */,
 				2DD8D2B31C0DFE1300AA15DF /* main.m in Sources */,
+				2DD8D2E61C0E007000AA15DF /* homographyUtil.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +440,7 @@
 				2DD8D2D21C0DFE1400AA15DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2DD8D2D31C0DFE1400AA15DF /* Build configuration list for PBXNativeTarget "RT_AR_NavUITests" */ = {
 			isa = XCConfigurationList;
@@ -438,6 +449,7 @@
 				2DD8D2D51C0DFE1400AA15DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
