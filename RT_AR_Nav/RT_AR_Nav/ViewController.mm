@@ -21,9 +21,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-//    [self playVideo];
+    [self playVideo];
     
-    [self loadVideo];
+//    [self loadVideo];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,7 +49,7 @@
     NSURL *fileURL = [NSURL fileURLWithPath:filepath];
     
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:fileURL options:nil];
-    AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    AVAssetImageGenerator *gen = [[AVAsseImageGenerator alloc] initWithAsset:asset];
     gen.appliesPreferredTrackTransform = YES;
     
     imageView_ = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
