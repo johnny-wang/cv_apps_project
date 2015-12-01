@@ -19,6 +19,8 @@
 		2D0270AB1C0B915100AF4B53 /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2D0270AA1C0B915100AF4B53 /* test.mp4 */; settings = {ASSET_TAGS = (); }; };
 		2DD8D1DC1C0CCA9E00AA15DF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D1DB1C0CCA9E00AA15DF /* CoreMedia.framework */; };
 		2DD8D1DE1C0CDBBF00AA15DF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D1DD1C0CDBBF00AA15DF /* opencv2.framework */; settings = {ASSET_TAGS = (); }; };
+		2DD8D1E41C0D3F0800AA15DF /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D1E31C0D3F0800AA15DF /* Accelerate.framework */; settings = {ASSET_TAGS = (); }; };
+		2DD8D1EA1C0D3FD700AA15DF /* homographyUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DD8D1E81C0D3FD700AA15DF /* homographyUtil.cpp */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,9 @@
 		2D0270AA1C0B915100AF4B53 /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
 		2DD8D1DB1C0CCA9E00AA15DF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		2DD8D1DD1C0CDBBF00AA15DF /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		2DD8D1E31C0D3F0800AA15DF /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Accelerate.framework; sourceTree = "<group>"; };
+		2DD8D1E81C0D3FD700AA15DF /* homographyUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = homographyUtil.cpp; path = homography/homographyUtil.cpp; sourceTree = "<group>"; };
+		2DD8D1E91C0D3FD700AA15DF /* homographyUtil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = homographyUtil.hpp; path = homography/homographyUtil.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +64,7 @@
 			files = (
 				2DD8D1DC1C0CCA9E00AA15DF /* CoreMedia.framework in Frameworks */,
 				2D0270A71C0B8D0300AF4B53 /* AVFoundation.framework in Frameworks */,
+				2DD8D1E41C0D3F0800AA15DF /* Accelerate.framework in Frameworks */,
 				2DD8D1DE1C0CDBBF00AA15DF /* opencv2.framework in Frameworks */,
 				2D0270A51C0A9DBA00AF4B53 /* CoreLocation.framework in Frameworks */,
 			);
@@ -77,6 +83,7 @@
 		2D0270731C0A9D6100AF4B53 = {
 			isa = PBXGroup;
 			children = (
+				2DD8D1E31C0D3F0800AA15DF /* Accelerate.framework */,
 				2DD8D1DD1C0CDBBF00AA15DF /* opencv2.framework */,
 				2DD8D1DB1C0CCA9E00AA15DF /* CoreMedia.framework */,
 				2D0270A61C0B8D0300AF4B53 /* AVFoundation.framework */,
@@ -115,6 +122,8 @@
 		2D02707F1C0A9D6100AF4B53 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2DD8D1E81C0D3FD700AA15DF /* homographyUtil.cpp */,
+				2DD8D1E91C0D3FD700AA15DF /* homographyUtil.hpp */,
 				2D0270AA1C0B915100AF4B53 /* test.mp4 */,
 				2D0270801C0A9D6100AF4B53 /* main.m */,
 			);
@@ -234,6 +243,7 @@
 				2D0270871C0A9D6100AF4B53 /* ViewController.mm in Sources */,
 				2D0270841C0A9D6100AF4B53 /* AppDelegate.m in Sources */,
 				2D0270811C0A9D6100AF4B53 /* main.m in Sources */,
+				2DD8D1EA1C0D3FD700AA15DF /* homographyUtil.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +374,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/GIS_info/homography",
 				);
 				INFOPLIST_FILE = GIS_info/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -379,6 +390,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/GIS_info/homography",
 				);
 				INFOPLIST_FILE = GIS_info/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
