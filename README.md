@@ -80,3 +80,42 @@ Schedule
 
 **Dec 1 – Dec 11**:  Working software that achieves Tier3 goal
 
+----------------------------------------------------------------------------------------
+
+Checkpoint
+==========
+
+####Progress
+In the past couple of weeks we mainly focused on the algorithm prototyping and building the application (App) framework work. We made progress on our tier 1 goal of achieving offline augmented reality road marking with images.
+
+We worked on five submodule of the App. They are: 
+1. string-to-image conversion, 
+2. homography estimation, 
+3. image projection, 
+4. Canny edge detection, and 
+5. lane detection. 
+
+We did this work on a still image running on Xcode’s iPad simulator. The region of interest for the app is the vanishing point near the center of the image. It will use this to then vertically locate the lower half of the image. This will crop out the part that is noisy for edge detection. Then Canny Edge Detection is used to extract the lane markings and road curb. After canny edge detection, Hough Transformation is used to extract the lines in the image. 
+To get the correct the lane edge, we filter out the line that is close to horizontal line. We take the left-most line and the right-most line as our road margin. From this road margin, we estimate the target projection area and shape of the road name. Figure 1 shows the temporary result of the project. 
+
+ ![Road Name](/images/road_name.png)
+**Figure 1**: Lane detection, homography estimation, and projection.
+
+Beside the algorithm prototype, we also studied the Avfoundation framework to work with live video data.  
+
+####Challenge
+There are two main concerns in the current progress of the project:
+the current software pipeline take 0.14 seconds to run a frame, making the frame rate around 7fps. This is far from standard real-time of 30fps. From program analysis through profiling, the plane estimation described in Section 1 only takes 0.03 second. The rest of the time costs are due to program overhead, especially image conversions. This part seems hard to optimize.
+The success of Canny Edge Detection and Hough Transformation depends on the tuning of several parameters. These parameters will probably change for different light condition on the road. 
+
+The main underlying concern is the ability to run everything in real-time. We may need to run at 5-7fps and/or restrict to running on videos with good general lighting conditions.
+
+####Schedule
+The schedule of the project has not been changed a lot. The rest of our schedule looks like this:
+**Nov 24 - Dec 1**: Run App on video file. Optimize frame rate. Start street intersection algorithm (use GIS data for this?).
+**Dec 1 - Dec 11**: Intersection/GIS work. Real-time work. Optimize frame rate.
+
+Although these goals are the same as our original proposal, we realize that the optimization and real-time work may be much more difficult than expected. In addition, all the team members have multiple final class projects with its own demands. Nonetheless, we will still put full effort into achieving a real-time system, but there is a real possibility of only showing the App with pre-recorded video.
+
+####Final Result
+For our final presentation, we plan to have a video of the iPad in use (in a car) and overlaying the street name in real-time. As mentioned in Section 3, we may not achieve the real-time and have a system running on pre-recorded video instead.
