@@ -23,9 +23,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [self playVideo];
+//    [self playVideo];
     
-//    [self loadVideo];
+    [self loadVideo];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,8 +83,14 @@
         
         [UIImagePNGRepresentation(thumb) writeToFile:pngPath atomically:YES];
         
-        imageView_.image = thumb;
+//        imageView_.image = thumb;
 //        imageView_.image = [self processImage:thumb];
+        
+        UIImageView *img_now = [[UIImageView alloc] initWithImage:[self processImage:thumb]];
+        
+        img_now.hidden = YES;
+        [self.view addSubview:img_now];
+//        [img_now release];
         
         value += step;
         
@@ -110,13 +116,13 @@
     Mat roadImageGray;
     
     cvtColor(roadImage, roadImageGray, CV_BGR2GRAY);
-    cv::Rect roi(roadImageGray.cols/2-200,roadImageGray.rows/2, 400, roadImageGray.rows/2);
+    cv::Rect roi(roadImageGray.cols/2-400,roadImageGray.rows/2, 800, roadImageGray.rows/4);
     Mat roadImageGaussian=roadImageGray(roi);
     
     vector<Vec2f> lines;
     //Mat roadImageGray;
     
-    GaussianBlur(roadImageGaussian, roadImageGaussian, cv::Size(15,15), 5);
+    GaussianBlur(roadImageGaussian, roadImageGaussian, cv::Size(11,11), 5);
     resize(roadImageGaussian,roadImageGaussian,cv::Size(),0.5,0.5);
     Canny(roadImageGaussian, roadImageGaussian, 0, 50, 3);
     resize(roadImageGaussian,roadImageGaussian,cv::Size(),2,2,INTER_CUBIC);
@@ -186,9 +192,9 @@
         cv::Point pt1, pt2;
         double a = cos(theta), b = sin(theta);
         double x0 = a*rho, y0 = b*rho;
-        pt1.x = cvRound(x0 + 3000*(-b))+roadImageGray.cols/2-200;
+        pt1.x = cvRound(x0 + 3000*(-b))+roadImageGray.cols/2-400;
         pt1.y = cvRound(y0 + 3000*(a))+roadImageGray.rows/2;
-        pt2.x = cvRound(x0 - 3000*(-b))+roadImageGray.cols/2-200;
+        pt2.x = cvRound(x0 - 3000*(-b))+roadImageGray.cols/2-400;
         pt2.y = cvRound(y0 - 3000*(a))+roadImageGray.rows/2;
         
         //calculate the pt_to
