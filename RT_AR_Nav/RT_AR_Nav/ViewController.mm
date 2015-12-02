@@ -101,7 +101,6 @@
 - (UIImage *)processImage:(UIImage *)inputImage
 {
     Mat roadImage = [self cvMatFromUIImage:inputImage];
-    double t = (double)getTickCount();
     
     // convert the road name to a image
     Mat textImage = cvMatFromString_cv("FORBES");
@@ -125,7 +124,7 @@
     GaussianBlur(roadImageGaussian, roadImageGaussian, cv::Size(11,11), 5);
     resize(roadImageGaussian,roadImageGaussian,cv::Size(),0.5,0.5);
     Canny(roadImageGaussian, roadImageGaussian, 0, 50, 3);
-    resize(roadImageGaussian,roadImageGaussian,cv::Size(),2,2,INTER_CUBIC);
+    resize(roadImageGaussian,roadImageGaussian,cv::Size(),2,2); //,INTER_CUBIC);
     HoughLines(roadImageGaussian, lines, 1, CV_PI/180, 200, 0, 0 );
     cvtColor(roadImageGaussian, roadImageGaussian, CV_GRAY2BGR);
     
@@ -213,7 +212,7 @@
         pt_to.push_back(Point2f(_x1,_y1));
         pt_to.push_back(Point2f(_x2,_y2));
         
-        //line( roadImage, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
+        line( roadImage, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
     }
     
     cout<<lines_filtered.size()<<endl;
@@ -227,27 +226,41 @@
     Mat resultImage;
     projHomography(roadImage, textImage, resultImage, H);
     
-    t = ((double)getTickCount() - t)/getTickFrequency();
-    cout<<"Time: "<<t<<"s"<<endl;
-    
     // Display the image
     imageView_ = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:imageView_];
     imageView_.contentMode = UIViewContentModeScaleAspectFit;
     
     //   imageView_.image = [self UIImageFromCVMat:resultImage];
-    UIImage *ret_img = [self UIImageFromCVMat:resultImage];
-    return ret_img;
+    
+    double t = (double)getTickCount();
+    // do the string to image conversion
+    NSString *string = @"FORBES";
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:40],
+                                 NSForegroundColorAttributeName : [UIColor whiteColor],
+                                 NSBackgroundColorAttributeName : [UIColor blackColor]};
+    UIImage *image = [self imageFromString:string attributes:attributes];
+    t = ((double)getTickCount() - t)/getTickFrequency();
+    cout<<"Time: "<<t<<"s"<<endl;
+    cout<<image.size.width<<" "<<image.size.height<<endl;
+    
+    return image;
 }
 
-- (cv::Mat)cvMatFromString:(NSString *)text
+- (UIImage *)imageFromString:(NSString *)string attributes:(NSDictionary *)attributes
 {
-    /** This function is for convering the text into the cvMat format
-     * There is probably a better solution to use opencv put text function
-     * Not used in current code
-     */
-    Mat stringImage;
-    return stringImage;
+    // function to convert string to image
+    
+    CGSize maximumLabelSize = CGSizeMake(310, 9999);
+    
+    CGRect textRect = [string boundingRectWithSize:maximumLabelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
+    UIGraphicsBeginImageContextWithOptions(textRect.size, NO, 0);
+    [string drawInRect:textRect withAttributes:attributes];
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 - (cv::Mat)cvMatFromUIImage:(UIImage *)image
