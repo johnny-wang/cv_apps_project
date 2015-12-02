@@ -30,15 +30,21 @@ using namespace std;
     [super viewDidLoad];
     
     /** read the test image */
-    UIImage *inputImage = [UIImage imageNamed:@"forbes.jpg"];
+    UIImage *inputImage = [UIImage imageNamed:@"frame_100.png"];
     
     //double t = (double)getTickCount();
 
     Mat roadImage = [self cvMatFromUIImage:inputImage];
-    double t = (double)getTickCount();
 
     /** convert the road name to a image */
     Mat textImage = cvMatFromString_cv("FORBES");
+    
+    
+    
+    
+    
+    
+    
     
     /** Initialize road name boundary points */
     /** [TODO] Automate this */
@@ -53,16 +59,16 @@ using namespace std;
     Mat roadImageGray;
     
     cvtColor(roadImage, roadImageGray, CV_BGR2GRAY);
-    cv::Rect roi(roadImageGray.cols/2-200,roadImageGray.rows/2, 400, roadImageGray.rows/2);
+    cv::Rect roi(roadImageGray.cols/2-400,roadImageGray.rows/2, 800, roadImageGray.rows/4);
     Mat roadImageGaussian=roadImageGray(roi);
     
     vector<Vec2f> lines;
     //Mat roadImageGray;
 
-    GaussianBlur(roadImageGaussian, roadImageGaussian, cv::Size(15,15), 5);
+    GaussianBlur(roadImageGaussian, roadImageGaussian, cv::Size(11,11), 5);
     resize(roadImageGaussian,roadImageGaussian,cv::Size(),0.5,0.5);
     Canny(roadImageGaussian, roadImageGaussian, 0, 50, 3);
-    resize(roadImageGaussian,roadImageGaussian,cv::Size(),2,2,INTER_CUBIC);
+    resize(roadImageGaussian,roadImageGaussian,cv::Size(),2,2);///,INTER_CUBIC);
     HoughLines(roadImageGaussian, lines, 1, CV_PI/180, 200, 0, 0 );
     cvtColor(roadImageGaussian, roadImageGaussian, CV_GRAY2BGR);
 
@@ -129,9 +135,9 @@ using namespace std;
         cv::Point pt1, pt2;
         double a = cos(theta), b = sin(theta);
         double x0 = a*rho, y0 = b*rho;
-        pt1.x = cvRound(x0 + 3000*(-b))+roadImageGray.cols/2-200;
+        pt1.x = cvRound(x0 + 3000*(-b))+roadImageGray.cols/2-400;
         pt1.y = cvRound(y0 + 3000*(a))+roadImageGray.rows/2;
-        pt2.x = cvRound(x0 - 3000*(-b))+roadImageGray.cols/2-200;
+        pt2.x = cvRound(x0 - 3000*(-b))+roadImageGray.cols/2-400;
         pt2.y = cvRound(y0 - 3000*(a))+roadImageGray.rows/2;
         
         
@@ -152,7 +158,7 @@ using namespace std;
         pt_to.push_back(Point2f(_x1,_y1));
         pt_to.push_back(Point2f(_x2,_y2));
         
-        //line( roadImage, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
+        line( roadImage, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
     }
     
     
@@ -186,27 +192,48 @@ using namespace std;
     Mat resultImage;
     projHomography(roadImage, textImage, resultImage, H);
     
-    t = ((double)getTickCount() - t)/getTickFrequency();
-    cout<<"Time: "<<t<<"s"<<endl;
+
     
     /** Display the image */
     imageView_ = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:imageView_];
     imageView_.contentMode = UIViewContentModeScaleAspectFit;
-
-    imageView_.image = [self UIImageFromCVMat:resultImage];
+    
+    double t = (double)getTickCount();
+    
+    // do the string to image conversion
+    NSString *string = @"FORBES";
+    NSDictionary *attributes = @{NSFontAttributeName            : [UIFont systemFontOfSize:40],
+                                 NSForegroundColorAttributeName : [UIColor whiteColor],
+                                 NSBackgroundColorAttributeName : [UIColor blackColor]};
+    UIImage *image = [self imageFromString:string attributes:attributes];
+    t = ((double)getTickCount() - t)/getTickFrequency();
+    cout<<"Time: "<<t<<"s"<<endl;
+    cout<<image.size.width<<" "<<image.size.height<<endl;
+   
+    
+    imageView_.image = image;//[self UIImageFromCVMat:resultImage];
 }
 
 
 
-- (cv::Mat)cvMatFromString:(NSString *)text
+- (UIImage *)imageFromString:(NSString *)string attributes:(NSDictionary *)attributes
 {
-    /** This function is for convering the text into the cvMat format 
-     * There is probably a better solution to use opencv put text function
-     * Not used in current code
-     */
-    Mat stringImage;
-    return stringImage;
+    // function to convert string to image
+    CGSize maximumLabelSize = CGSizeMake(310, 9999);
+    CGRect textRect = [string boundingRectWithSize:maximumLabelSize
+                                options:NSStringDrawingUsesLineFragmentOrigin
+                                attributes:attributes
+                                context:nil];
+    
+    UIGraphicsBeginImageContextWithOptions(textRect.size, NO, 0);
+    
+    [string drawInRect:textRect withAttributes:attributes];
+
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 

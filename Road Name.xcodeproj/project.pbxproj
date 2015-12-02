@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		562F6EAB1C0E10F500ABE285 /* frame_100.png in Resources */ = {isa = PBXBuildFile; fileRef = 562F6EAA1C0E10F500ABE285 /* frame_100.png */; settings = {ASSET_TAGS = (); }; };
 		56ECE9A81C0267D100977ACD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 56ECE9A71C0267D100977ACD /* main.m */; };
 		56ECE9AB1C0267D100977ACD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56ECE9AA1C0267D100977ACD /* AppDelegate.m */; };
 		56ECE9AE1C0267D100977ACD /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 56ECE9AD1C0267D100977ACD /* ViewController.mm */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		562F6EAA1C0E10F500ABE285 /* frame_100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame_100.png; sourceTree = "<group>"; };
 		56ECE9A31C0267D100977ACD /* Road Name.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Road Name.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		56ECE9A71C0267D100977ACD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		56ECE9A91C0267D100977ACD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 		56ECE99A1C0267D100977ACD = {
 			isa = PBXGroup;
 			children = (
+				562F6EAA1C0E10F500ABE285 /* frame_100.png */,
 				56ECE9C71C0271A600977ACD /* forbes.jpg */,
 				56ECE9CC1C027B7600977ACD /* opencv2.framework */,
 				56ECE9BF1C02693100977ACD /* AVFoundation.framework */,
@@ -156,6 +159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				562F6EAB1C0E10F500ABE285 /* frame_100.png in Resources */,
 				56ECE9B61C0267D100977ACD /* LaunchScreen.storyboard in Resources */,
 				56ECE9B31C0267D100977ACD /* Assets.xcassets in Resources */,
 				56ECE9C81C0271A600977ACD /* forbes.jpg in Resources */,
