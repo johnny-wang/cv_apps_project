@@ -18,6 +18,19 @@ using namespace std;
     CLGeocoder *geocoder;
     CLGeocoder *placemark;
     
+    NSString *name; // eg. Apple Inc.
+    NSString *thoroughfare; // street name, eg. Infinite Loop
+    NSString *subThoroughfare; // eg. 1
+    NSString *locality; // city, eg. Cupertino
+    NSString *subLocality; // neighborhood, common name, eg. Mission District
+    NSString *administrativeArea; // state, eg. CA
+    NSString *subAdministrativeArea; // county, eg. Santa Clara
+    NSString *postalCode; // zip code, eg. 95014
+    NSString *ISOcountryCode; // eg. US
+    NSString *inlandWater; // eg. Lake Tahoe
+    NSString *ocean; // eg. Pacific Ocean
+
+    
     UIImageView *imageView_;
 }
 @end
@@ -118,6 +131,42 @@ using namespace std;
 {
     CLLocationCoordinate2D here = newLocation.coordinate;
     NSLog(@"%f %f ", here.latitude, here.longitude);
+    
+    // below is added 151204
+    [geocoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) 
+    {
+        if (error == nil&& [placemarks count] >0) 
+        {
+            placemark = [placemarks lastObject];
+            latitude = [NSString stringWithFormat:@"%.5f",newLocation.coordinate.latitude];
+            longitude = [NSString stringWithFormat:@"%.5f",newLocation.coordinate.longitude];
+            
+            name = placemark.name;
+            thoroughfare = placemark.thoroughfare;
+            locality = placemark.locality;
+            state = placemark.administrativeArea;
+            country = placemark.country;
+            postalCode = placemark.postalCode;
+
+        } else 
+        {
+            NSLog(@"%@", error.debugDescription);
+        }
+    }];
+    
+    // visualization test
+    CGPoint point;
+    point.x = 100;
+    point.y = 100;
+    
+    UIImage *inputImage = [UIImage imageNamed:@"forbes.jpg"];
+    UIImage * ret_img;
+    
+    NSString *addr = [NSString stringWithFormat: @"%@, %@, %@, %@, %@, %@ : %@, %@ ", name, thoroughfare, locality, state, country, postalCode, latitude, longitude];
+    ret_img = [self drawText:addr inImage:inputImage atPoint:point];
+    
+    imageView_.image = ret_img;
+
 }
 
 
