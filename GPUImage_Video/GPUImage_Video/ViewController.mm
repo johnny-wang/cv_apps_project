@@ -31,8 +31,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-//    [self loadVideo];
-    [self loadCamera];
+    [self loadVideo];
+//    [self loadCamera];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,7 +43,7 @@
 - (void)loadCamera {
     CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
     UIView *primaryView = [[UIView alloc] initWithFrame:mainScreenFrame];
-    primaryView.backgroundColor = [UIColor blueColor];
+//    primaryView.backgroundColor = [UIColor blueColor];
     self.view = primaryView;
   
     filterView = [[GPUImageView alloc] initWithFrame:CGRectMake(primaryView.frame.origin.x, primaryView.frame.origin.y, primaryView.frame.size.width, primaryView.frame.size.height)];
@@ -101,9 +101,9 @@
     // draw lines
     GPUImageLineGenerator *lineDrawFilter = [[GPUImageLineGenerator alloc] init];
     
-//    UIImage *currentImage = [movieFile_ imageFromCurrentFramebuffer];
-
-//    CGSize imgSize = currentImage.size;
+    GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
+    
+    //    CGSize imgSize = currentImage.size;
     CGSize imgSize = CGSizeMake(1280, 720);
     NSLog(@"width = %f, height = %f", imgSize.width, imgSize.height); // 2448 x 3264
     float down_scale = 0.15;   // 0.17             // downscale of image
@@ -114,7 +114,7 @@
     
     float width_scale = imgSize.width * down_scale;
     float height_scale = imgSize.height * down_scale;
-
+    
     // Set filter variables
     // scale/resize image
     [scaleFilter forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(width_scale,height_scale)];
@@ -130,29 +130,46 @@
     [grayscaleFilter addTarget:scaleFilter];
     [scaleFilter addTarget:gausFilter];
     [gausFilter addTarget:cannyEdgeFilter];
-    [cannyEdgeFilter addTarget:movieView_];
-    
-/*
     [cannyEdgeFilter addTarget:lineFilter];
-    [lineFilter addTarget:movieView_];
     
-    __weak typeof(self) weakSelf = self;
-    [lineFilter setLinesDetectedBlock:^(GLfloat *flt, NSUInteger count, CMTime time) {
-        NSLog(@"Number of lines: %ld", (unsigned long)count);
-        GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
-        [blendFilter forceProcessingAtSize:imgSize];
-        [movieFile_ addTarget:blendFilter];
-        [lineDrawFilter addTarget:blendFilter];
-        
-        [blendFilter useNextFrameForImageCapture];
-        [lineDrawFilter renderLinesFromArray:flt count:count frameTime:time];
-        //        weakSelf.doneProcessingImage([blendFilter imageFromCurrentFramebuffer]);
+    GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
+    blendFilter.mix = 0.5;
+    [blendFilter forceProcessingAtSize:imgSize];
+    
+    [movieFile_ addTarget:gammaFilter];
+    [gammaFilter addTarget:blendFilter];
+    
+    [lineFilter addTarget:blendFilter];
+    
+    GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
+    [lineGenerator forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
+    [lineGenerator setLineColorRed:1.0 green:0.0 blue:0.0];
+    [(GPUImageHoughTransformLineDetector *)filter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
+        [lineGenerator renderLinesFromArray:lineArray count:linesDetected frameTime:frameTime];
+        NSLog(@"lines detected: %ld", (unsigned long)linesDetected);
     }];
- */
+    [lineGenerator addTarget:blendFilter atTextureLocation:1];
+    
+    [blendFilter addTarget:movieView_];
+    
+    /*
+     __weak typeof(self) weakSelf = self;
+     [lineFilter setLinesDetectedBlock:^(GLfloat *flt, NSUInteger count, CMTime time) {
+     NSLog(@"Number of lines: %ld", (unsigned long)count);
+     GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
+     [blendFilter forceProcessingAtSize:imgSize];
+     [movieFile_ addTarget:blendFilter];
+     [lineDrawFilter addTarget:blendFilter];
+     
+     [blendFilter useNextFrameForImageCapture];
+     [lineDrawFilter renderLinesFromArray:flt count:count frameTime:time];
+     //        weakSelf.doneProcessingImage([blendFilter imageFromCurrentFramebuffer]);
+     }];
+     */
     
     [self.view addSubview:movieView_];
     [self.view sendSubviewToBack:movieView_];
-
+    
     player_.rate = 1.0;
     
     [movieFile_ startProcessing];
