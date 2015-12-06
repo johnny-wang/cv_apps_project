@@ -6,10 +6,7 @@
 //  Copyright © 2015 CV_Apps. All rights reserved.
 //
 
-#include "opencv2/opencv.hpp"
 #import "ViewController.h"  // this HAS TO come before homographyUtil
-#import <GPUImage/GPUImage.h>
-#include "homographyUtil.hpp"
 
 @interface ViewController () {    
     
@@ -17,6 +14,8 @@
     AVPlayer *player_;
     UIImageView *imageView_;
     
+    NSString *filePath_;
+    NSURL *fileURL_;
 }
 
 @end
@@ -27,9 +26,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [self playAVVideo];
-    
-//    [self loadVideo];
+    [self openVideo];
+//    [self processVideo];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,22 +35,25 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)playAVVideo {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"section2" ofType:@"MOV"];
-    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-    self->player_ = [AVPlayer playerWithURL:fileURL];
+- (void)openVideo {
+    filePath_ = [[NSBundle mainBundle] pathForResource:@"section2" ofType:@"MOV"];
+    fileURL_ = [NSURL fileURLWithPath:filePath_];
+    player_ = [AVPlayer playerWithURL:fileURL_];
     
-    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:self->player_];
-    self->player_.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player_];
+    player_.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     layer.frame = CGRectMake(0, 0, 1024, 768);
     [self.view.layer addSublayer: layer];
     
-    [self->player_ play];
+    [player_ play];
+}
+
+- (void)processVideo {
     
-    playerItem_ = [[AVPlayerItem alloc] initWithURL:fileURL];
+    playerItem_ = [[AVPlayerItem alloc] initWithURL:fileURL_];
     player_ = [AVPlayer playerWithPlayerItem:playerItem_];
     
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:fileURL options:nil];
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:fileURL_ options:nil];
     AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
     gen.appliesPreferredTrackTransform = YES;
     
