@@ -16,17 +16,19 @@ using namespace std;
 @interface ViewController ()
 {
     CLGeocoder *geocoder;
-    CLGeocoder *placemark;
+    CLPlacemark *placemark;
     
+    NSString *latitude;
+    NSString *longitude;
     NSString *name; // eg. Apple Inc.
     NSString *thoroughfare; // street name, eg. Infinite Loop
     NSString *subThoroughfare; // eg. 1
     NSString *locality; // city, eg. Cupertino
     NSString *subLocality; // neighborhood, common name, eg. Mission District
-    NSString *administrativeArea; // state, eg. CA
+    NSString *state; // state, eg. CA
     NSString *subAdministrativeArea; // county, eg. Santa Clara
     NSString *postalCode; // zip code, eg. 95014
-    NSString *ISOcountryCode; // eg. US
+    NSString *country; // eg. US
     NSString *inlandWater; // eg. Lake Tahoe
     NSString *ocean; // eg. Pacific Ocean
 
