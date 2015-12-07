@@ -96,15 +96,16 @@
     GPUImageGrayscaleFilter *grayscaleFilter = [[GPUImageGrayscaleFilter alloc] init];
     
     //    CGSize imgSize = currentImage.size;
-    CGSize imgSize = CGSizeMake(1280, 720);
-    NSLog(@"width = %f, height = %f", imgSize.width, imgSize.height); // 2448 x 3264
-    float down_scale = 0.1;   // 0.17             // downscale of image
+    CGSize imgSize = CGSizeMake(2048, 1536);
+    NSLog(@"width = %f x height = %f", imgSize.width, imgSize.height); // 2048 x 1536
+    float down_scale = 0.75;   // 0.17             // downscale of image
     
     // Set filter variables
     // scale/resize image
     GPUImageLanczosResamplingFilter *scaleFilter = [[GPUImageLanczosResamplingFilter alloc] init];
     float width_scale = imgSize.width * down_scale;
     float height_scale = imgSize.height * down_scale;
+    NSLog(@"downscale: %f x %f", width_scale, height_scale);
     [scaleFilter forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(width_scale,height_scale)];
 
     // blur
@@ -114,23 +115,23 @@
     
     GPUImageHoughTransformLineDetector *lineFilter = [[GPUImageHoughTransformLineDetector alloc] init];
     [lineFilter setEdgeThreshold:0.9];
-    [lineFilter setLineDetectionThreshold:0.75]; // 0.6
+    [lineFilter setLineDetectionThreshold:0.9]; // 0.6
     
-//    [movieFile_ addTarget:grayscaleFilter];
-//    [grayscaleFilter addTarget:scaleFilter];
-//    [scaleFilter addTarget:gausFilter];
-//    [gausFilter addTarget:cannyEdgeFilter];
-//    [cannyEdgeFilter addTarget:lineFilter];
-
+    GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:CGRectMake(0.0, 0.0, 0.5, 0.5)];
+    
      /* Scale down for better performance */
-//    [movieFile_ addTarget:gausFilter];
-//    [gausFilter addTarget:grayscaleFilter];
 //    [movieFile_ addTarget:grayscaleFilter];
 //    [grayscaleFilter addTarget:scaleFilter];
-    [movieFile_ addTarget:scaleFilter];
-    [scaleFilter addTarget:lineFilter];
+    
+//    [movieFile_ addTarget:scaleFilter];
+//    [scaleFilter addTarget:lineFilter];
+
+    /* Is this cropping ?!?! */
+//    [movieFile_ addTarget:cropFilter];
+//    [cropFilter addTarget:lineFilter];
+
     /* Use just this to see all the Hough lines */
-//    [movieFile_ addTarget:lineFilter];
+    [movieFile_ addTarget:lineFilter];
     
     GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
     blendFilter.mix = 0.5;
@@ -183,6 +184,11 @@
     [movieFile_ startProcessing];
     
     [player_ play];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end
