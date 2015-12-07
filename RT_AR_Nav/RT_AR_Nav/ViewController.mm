@@ -12,11 +12,20 @@
     
     AVPlayerItem *playerItem_;
     AVPlayer *player_;
+    
     UIImageView *imageView_;
     
     NSString *filePath_;
     NSURL *fileURL_;
+    
+    MyAVVideoCamera *videoCamera_;
+    
+    UILabel *fpsText;
+    NSDate *lastFrameTime;
+    CAShapeLayer *imageOverlay;
 }
+
+//@property (nonatomic, retain) MyAVVideoCamera* videoCamera;
 
 @end
 
@@ -26,13 +35,39 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [self openVideo];
+    // Create and attach view so we can pass it to videoCamera
+    imageView_ = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:imageView_];
+    imageView_.contentMode = UIViewContentModeScaleAspectFit;
+    
+    videoCamera_ = [[MyAVVideoCamera alloc] initWithParentView:imageView_];
+    videoCamera_.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
+    videoCamera_.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
+    videoCamera_.grayscaleMode = NO;
+    videoCamera_.delegate = self;
+ 
+    [videoCamera_ start];
+    
+//    [self addOverlay];
+
+//    [self openVideo];
 //    [self processVideo];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+// main method to process the image and do tracking
+- (void)processImage:(Mat&)image {
+    
+}
+
+- (void) addOverlay {
+    imageOverlay=[CAShapeLayer layer];
+    [self.view.layer addSublayer:imageOverlay];
 }
 
 - (void)openVideo {
@@ -70,6 +105,7 @@
     
     int value = 0;
     
+    /*    
     for (int i = 0; i < required_frames_count; i++) {
         
         AVAssetImageGenerator *image_generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
@@ -92,8 +128,10 @@
         
         NSLog(@"%d: %@", value, pngPath);
     }
+    */
 }
 
+/*
 - (UIImage *)processImage:(UIImage *)inputImage
 {
     Mat roadImage = [self cvMatFromUIImage:inputImage];
@@ -229,6 +267,7 @@
     UIImage *ret_img = [self UIImageFromCVMat:resultImage];
     return ret_img;
 }
+ */
 
 - (cv::Mat)cvMatFromString:(NSString *)text
 {
