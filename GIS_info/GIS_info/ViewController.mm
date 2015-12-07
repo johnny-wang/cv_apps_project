@@ -125,6 +125,20 @@ using namespace std;
     [locationManager startMonitoringSignificantLocationChanges];
     [locationManager startUpdatingLocation];
 */
+    geocoder = [[CLGeocoder alloc] init];
+    
+    if (locationManager == nil)
+    {
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
+        locationManager.delegate = self;
+        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [locationManager requestWhenInUseAuthorization];
+        }
+        [locationManager startMonitoringSignificantLocationChanges];
+        [locationManager startUpdatingLocation];
+    }
+    
 }
 
 - (UIImage*) drawText:(NSString*) text 
@@ -132,16 +146,29 @@ using namespace std;
              atPoint:(CGPoint)   point 
 {
 
-    UIFont *font = [UIFont boldSystemFontOfSize:12];
-    UIGraphicsBeginImageContext(image.size);
+    UIGraphicsBeginImageContextWithOptions(image.size, YES, 0.0f);
     [image drawInRect:CGRectMake(0,0,image.size.width,image.size.height)];
     CGRect rect = CGRectMake(point.x, point.y, image.size.width, image.size.height);
     [[UIColor whiteColor] set];
-    [text drawInRect:CGRectIntegral(rect) withFont:font]; 
+    
+    UIFont *font = [UIFont boldSystemFontOfSize:22];
+    if([text respondsToSelector:@selector(drawInRect:withAttributes:)])
+    {
+        //iOS 7
+        NSDictionary *att = @{NSFontAttributeName:font};
+        [text drawInRect:rect withAttributes:att];
+    }
+    else
+    {
+        //legacy support
+        [text drawInRect:CGRectIntegral(rect) withFont:font];
+    }
+    
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-
+    
     return newImage;
+
 }
 
 - (void)locationManager:(CLLocationManager *)manager
