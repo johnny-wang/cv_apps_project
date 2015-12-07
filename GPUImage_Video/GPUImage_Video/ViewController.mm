@@ -96,9 +96,9 @@
     GPUImageGrayscaleFilter *grayscaleFilter = [[GPUImageGrayscaleFilter alloc] init];
     
     //    CGSize imgSize = currentImage.size;
-    CGSize imgSize = CGSizeMake(2048, 1536);
+    CGSize imgSize = CGSizeMake(1280, 720);
     NSLog(@"width = %f x height = %f", imgSize.width, imgSize.height); // 2048 x 1536
-    float down_scale = 0.75;   // 0.17             // downscale of image
+    float down_scale = 1.0;   // 0.17             // downscale of image
     
     // Set filter variables
     // scale/resize image
@@ -114,10 +114,10 @@
     [gausFilter setBlurRadiusInPixels:blur_radius];
     
     GPUImageHoughTransformLineDetector *lineFilter = [[GPUImageHoughTransformLineDetector alloc] init];
-    [lineFilter setEdgeThreshold:0.9];
-    [lineFilter setLineDetectionThreshold:0.9]; // 0.6
+    [lineFilter setEdgeThreshold:0.5];
+    [lineFilter setLineDetectionThreshold:0.5]; // 0.6
     
-    GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:CGRectMake(0.0, 0.0, 0.5, 0.5)];
+    GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:CGRectMake(0, 0, 0.5, 0.5)];
     
      /* Scale down for better performance */
 //    [movieFile_ addTarget:grayscaleFilter];
@@ -127,11 +127,11 @@
 //    [scaleFilter addTarget:lineFilter];
 
     /* Is this cropping ?!?! */
-//    [movieFile_ addTarget:cropFilter];
-//    [cropFilter addTarget:lineFilter];
+    [movieFile_ addTarget:cropFilter];
+    [cropFilter addTarget:lineFilter];
 
     /* Use just this to see all the Hough lines */
-    [movieFile_ addTarget:lineFilter];
+//    [movieFile_ addTarget:lineFilter];
     
     GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
     blendFilter.mix = 0.5;
@@ -147,7 +147,7 @@
     // draw lines
     GPUImageLineGenerator *lineDrawFilter = [[GPUImageLineGenerator alloc] init];
 //    [lineDrawFilter forceProcessingAtSize:imgSize];
-    [lineDrawFilter addTarget:blendFilter];
+//    [lineDrawFilter addTarget:blendFilter];
     
     GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
     [lineGenerator forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
