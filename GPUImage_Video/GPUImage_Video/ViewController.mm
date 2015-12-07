@@ -81,7 +81,7 @@
 }
 
 - (void)loadVideo {
-    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"test_whole" ofType:@"mp4"];
+    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"section2" ofType:@"MOV"];
     NSURL *fileURL = [NSURL fileURLWithPath:filepath];
     playerItem_ = [[AVPlayerItem alloc] initWithURL:fileURL];
     player_ = [AVPlayer playerWithPlayerItem:playerItem_];
@@ -94,57 +94,65 @@
     
     // Initialize filters
     GPUImageGrayscaleFilter *grayscaleFilter = [[GPUImageGrayscaleFilter alloc] init];
-    GPUImageLanczosResamplingFilter *scaleFilter = [[GPUImageLanczosResamplingFilter alloc] init];
-    GPUImageGaussianBlurFilter *gausFilter = [[GPUImageGaussianBlurFilter alloc] init];
-    GPUImageCannyEdgeDetectionFilter *cannyEdgeFilter = [[GPUImageCannyEdgeDetectionFilter alloc] init];
-    GPUImageHoughTransformLineDetector *lineFilter = [[GPUImageHoughTransformLineDetector alloc] init];
-    // draw lines
-    GPUImageLineGenerator *lineDrawFilter = [[GPUImageLineGenerator alloc] init];
-    
-    GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
     
     //    CGSize imgSize = currentImage.size;
     CGSize imgSize = CGSizeMake(1280, 720);
     NSLog(@"width = %f, height = %f", imgSize.width, imgSize.height); // 2448 x 3264
-    float down_scale = 0.15;   // 0.17             // downscale of image
-    float blur_radius = 1;  // 1                // Gaussian blur in pixels
-    float lower_thresh = 0.1; // 0.11             // cannyEdge lower threshold
-    float upper_thresh = lower_thresh * 3;  // cannyEdge upper threshold
-    float line_thresh = 0.10;  //0.6             // hough line threshold
-    
-    float width_scale = imgSize.width * down_scale;
-    float height_scale = imgSize.height * down_scale;
+    float down_scale = 0.1;   // 0.17             // downscale of image
     
     // Set filter variables
     // scale/resize image
+    GPUImageLanczosResamplingFilter *scaleFilter = [[GPUImageLanczosResamplingFilter alloc] init];
+    float width_scale = imgSize.width * down_scale;
+    float height_scale = imgSize.height * down_scale;
     [scaleFilter forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(width_scale,height_scale)];
+
     // blur
+    GPUImageGaussianBlurFilter *gausFilter = [[GPUImageGaussianBlurFilter alloc] init];
+    float blur_radius = 1;  // 1                // Gaussian blur in pixels
     [gausFilter setBlurRadiusInPixels:blur_radius];
-    [cannyEdgeFilter setBlurRadiusInPixels:blur_radius];
-    [cannyEdgeFilter setLowerThreshold:lower_thresh];
-    [cannyEdgeFilter setUpperThreshold:upper_thresh];
-    [lineFilter setLineDetectionThreshold:line_thresh];
-    [lineDrawFilter forceProcessingAtSize:imgSize];
     
-    [movieFile_ addTarget:grayscaleFilter];
-    [grayscaleFilter addTarget:scaleFilter];
-    [scaleFilter addTarget:gausFilter];
-    [gausFilter addTarget:cannyEdgeFilter];
-    [cannyEdgeFilter addTarget:lineFilter];
+    GPUImageHoughTransformLineDetector *lineFilter = [[GPUImageHoughTransformLineDetector alloc] init];
+    [lineFilter setEdgeThreshold:0.9];
+    [lineFilter setLineDetectionThreshold:0.75]; // 0.6
+    
+//    [movieFile_ addTarget:grayscaleFilter];
+//    [grayscaleFilter addTarget:scaleFilter];
+//    [scaleFilter addTarget:gausFilter];
+//    [gausFilter addTarget:cannyEdgeFilter];
+//    [cannyEdgeFilter addTarget:lineFilter];
+
+     /* Scale down for better performance */
+//    [movieFile_ addTarget:gausFilter];
+//    [gausFilter addTarget:grayscaleFilter];
+//    [movieFile_ addTarget:grayscaleFilter];
+//    [grayscaleFilter addTarget:scaleFilter];
+    [movieFile_ addTarget:scaleFilter];
+    [scaleFilter addTarget:lineFilter];
+    /* Use just this to see all the Hough lines */
+//    [movieFile_ addTarget:lineFilter];
     
     GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
     blendFilter.mix = 0.5;
-    [blendFilter forceProcessingAtSize:imgSize];
-    
+//    [blendFilter forceProcessingAtSize:imgSize];
+
+    /**
+    GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
     [movieFile_ addTarget:gammaFilter];
     [gammaFilter addTarget:blendFilter];
+    **/
+    [movieFile_ addTarget:blendFilter];
     
-    [lineFilter addTarget:blendFilter];
+    // draw lines
+    GPUImageLineGenerator *lineDrawFilter = [[GPUImageLineGenerator alloc] init];
+//    [lineDrawFilter forceProcessingAtSize:imgSize];
+    [lineDrawFilter addTarget:blendFilter];
     
     GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
     [lineGenerator forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
     [lineGenerator setLineColorRed:1.0 green:0.0 blue:0.0];
-    [(GPUImageHoughTransformLineDetector *)filter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
+    
+    [lineFilter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
         [lineGenerator renderLinesFromArray:lineArray count:linesDetected frameTime:frameTime];
         NSLog(@"lines detected: %ld", (unsigned long)linesDetected);
     }];

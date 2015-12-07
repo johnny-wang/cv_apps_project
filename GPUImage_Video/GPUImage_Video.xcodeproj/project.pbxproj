@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2DD1EA121C155232006F0CBF /* section2.MOV in Resources */ = {isa = PBXBuildFile; fileRef = 2DD1EA111C155232006F0CBF /* section2.MOV */; };
 		2DD8D2F51C0F664900AA15DF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD8D2F41C0F664900AA15DF /* main.m */; };
 		2DD8D2F81C0F664900AA15DF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD8D2F71C0F664900AA15DF /* AppDelegate.m */; };
 		2DD8D2FB1C0F664900AA15DF /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2DD8D2FA1C0F664900AA15DF /* ViewController.mm */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2DD1EA111C155232006F0CBF /* section2.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = section2.MOV; sourceTree = "<group>"; };
 		2DD8D2F01C0F664900AA15DF /* GPUImage_Video.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPUImage_Video.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DD8D2F41C0F664900AA15DF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2DD8D2F61C0F664900AA15DF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 		2DD8D2F31C0F664900AA15DF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2DD1EA111C155232006F0CBF /* section2.MOV */,
 				2DD8D35B1C0FC8B500AA15DF /* test_whole.mp4 */,
 				2DD8D3591C0F792C00AA15DF /* test_short.mp4 */,
 				2DD8D2F41C0F664900AA15DF /* main.m */,
@@ -225,6 +228,7 @@
 				2DD8D35A1C0F792C00AA15DF /* test_short.mp4 in Resources */,
 				2DD8D3031C0F664900AA15DF /* LaunchScreen.storyboard in Resources */,
 				2DD8D35C1C0FC8B500AA15DF /* test_whole.mp4 in Resources */,
+				2DD1EA121C155232006F0CBF /* section2.MOV in Resources */,
 				2DD8D3001C0F664900AA15DF /* Assets.xcassets in Resources */,
 				2DD8D2FE1C0F664900AA15DF /* Main.storyboard in Resources */,
 			);
