@@ -20,7 +20,25 @@
     GPUImageView *filterView;
     GPUImageVideoCamera *videoCamera;
     GPUImageOutput<GPUImageInput> *filter;
-    __unsafe_unretained UISlider *slider;
+    
+    // For geolocation
+    UIImage *street_name;
+    CLLocationManager *locationManager;
+    CLGeocoder *geocoder;
+    CLPlacemark *placemark;
+    NSString *latitude;
+    NSString *longitude;
+    NSString *name; // eg. Apple Inc.
+    NSString *thoroughfare; // street name, eg. Infinite Loop
+    NSString *subThoroughfare; // eg. 1
+    NSString *locality; // city, eg. Cupertino
+    NSString *subLocality; // neighborhood, common name, eg. Mission District
+    NSString *state; // state, eg. CA
+    NSString *subAdministrativeArea; // county, eg. Santa Clara
+    NSString *postalCode; // zip code, eg. 95014
+    NSString *country; // eg. US
+    NSString *inlandWater; // eg. Lake Tahoe
+    NSString *ocean; // eg. Pacific Ocean
 }
 
 @end
@@ -31,6 +49,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    [self initLocation];
+    
     [self loadVideo];
 //    [self loadCamera];
 }
@@ -38,6 +58,24 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)initLocation {
+    geocoder = [[CLGeocoder alloc] init];
+    
+    if (locationManager == nil)
+    {
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+//        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
+        locationManager.distanceFilter = 20; // update after moving X meters
+        locationManager.delegate = self;
+        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [locationManager requestWhenInUseAuthorization];
+        }
+        [locationManager startMonitoringSignificantLocationChanges];
+        [locationManager startUpdatingLocation];
+    }
 }
 
 - (void)loadCamera {
@@ -65,7 +103,6 @@
     GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
     [filter addTarget:gammaFilter];
     [gammaFilter addTarget:blendFilter atTextureLocation:0];
-
     
     GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
     [lineGenerator forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
@@ -77,7 +114,6 @@
 
     [videoCamera startCameraCapture];
     videoCamera.runBenchmark = YES;
-
 }
 
 - (void)loadVideo {
@@ -117,16 +153,8 @@
     [lineFilter setEdgeThreshold:0.5];
     [lineFilter setLineDetectionThreshold:0.5]; // 0.6
     
+    // Try to find lines with only the bottom half of image
     GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:CGRectMake(0, 0, 0.5, 0.5)];
-    
-     /* Scale down for better performance */
-//    [movieFile_ addTarget:grayscaleFilter];
-//    [grayscaleFilter addTarget:scaleFilter];
-    
-//    [movieFile_ addTarget:scaleFilter];
-//    [scaleFilter addTarget:lineFilter];
-
-    /* Is this cropping ?!?! */
     [movieFile_ addTarget:cropFilter];
     [cropFilter addTarget:lineFilter];
 
@@ -137,11 +165,6 @@
     blendFilter.mix = 0.5;
 //    [blendFilter forceProcessingAtSize:imgSize];
 
-    /**
-    GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
-    [movieFile_ addTarget:gammaFilter];
-    [gammaFilter addTarget:blendFilter];
-    **/
     [movieFile_ addTarget:blendFilter];
     
     // draw lines
@@ -161,21 +184,6 @@
     
     [blendFilter addTarget:movieView_];
     
-    /*
-     __weak typeof(self) weakSelf = self;
-     [lineFilter setLinesDetectedBlock:^(GLfloat *flt, NSUInteger count, CMTime time) {
-     NSLog(@"Number of lines: %ld", (unsigned long)count);
-     GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
-     [blendFilter forceProcessingAtSize:imgSize];
-     [movieFile_ addTarget:blendFilter];
-     [lineDrawFilter addTarget:blendFilter];
-     
-     [blendFilter useNextFrameForImageCapture];
-     [lineDrawFilter renderLinesFromArray:flt count:count frameTime:time];
-     //        weakSelf.doneProcessingImage([blendFilter imageFromCurrentFramebuffer]);
-     }];
-     */
-    
     [self.view addSubview:movieView_];
     [self.view sendSubviewToBack:movieView_];
     
@@ -186,9 +194,67 @@
     [player_ play];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    CLLocationCoordinate2D here = newLocation.coordinate;
+    NSLog(@"%f %f ", here.latitude, here.longitude);
+    
+    // below is added 151204
+    [geocoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if (error == nil && ([placemarks count] > 0))
+         {
+             placemark = [placemarks lastObject];
+             latitude = [NSString stringWithFormat:@"%.5f",newLocation.coordinate.latitude];
+             longitude = [NSString stringWithFormat:@"%.5f",newLocation.coordinate.longitude];
+             
+             name = placemark.name;
+             thoroughfare = placemark.thoroughfare;
+             locality = placemark.locality;
+             state = placemark.administrativeArea;
+             country = placemark.country;
+             postalCode = placemark.postalCode;
+             
+         } else
+         {
+             NSLog(@"loc bug %@", error.debugDescription);
+         }
+     }];
+  
+/*
+    // visualization test
+    CGPoint point;
+    point.x = 100;
+    point.y = 100;
+    
+    UIImage *inputImage = [UIImage imageNamed:@"forbes.jpg"];
+    UIImage * ret_img;
+*/
+    
+    NSString *addr = [NSString stringWithFormat: @"%@, %@, %@, %@, %@, %@ : %@, %@ ", name, thoroughfare, locality, state, country, postalCode, latitude, longitude];
+    NSLog(@"%@", thoroughfare);
+//    ret_img = [self drawText:addr inImage:inputImage atPoint:point];
+    
+//    imageView_.image = ret_img;
+}
+
+- (UIImage*) drawText:(NSString*) text
+              inImage:(UIImage*)  image
+              atPoint:(CGPoint)   point
+{
+    
+    UIFont *font = [UIFont boldSystemFontOfSize:12];
+    UIGraphicsBeginImageContext(image.size);
+    [image drawInRect:CGRectMake(0,0,image.size.width,image.size.height)];
+    CGRect rect = CGRectMake(point.x, point.y, image.size.width, image.size.height);
+    [[UIColor whiteColor] set];
+    [text drawInRect:CGRectIntegral(rect) withFont:font];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
 }
 
 @end

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2DD1EA121C155232006F0CBF /* section2.MOV in Resources */ = {isa = PBXBuildFile; fileRef = 2DD1EA111C155232006F0CBF /* section2.MOV */; };
+		2DD1EA141C163CCB006F0CBF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD1EA131C163CCB006F0CBF /* CoreLocation.framework */; };
 		2DD8D2F51C0F664900AA15DF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD8D2F41C0F664900AA15DF /* main.m */; };
 		2DD8D2F81C0F664900AA15DF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD8D2F71C0F664900AA15DF /* AppDelegate.m */; };
 		2DD8D2FB1C0F664900AA15DF /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2DD8D2FA1C0F664900AA15DF /* ViewController.mm */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		2DD1EA111C155232006F0CBF /* section2.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = section2.MOV; sourceTree = "<group>"; };
+		2DD1EA131C163CCB006F0CBF /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		2DD8D2F01C0F664900AA15DF /* GPUImage_Video.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPUImage_Video.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DD8D2F41C0F664900AA15DF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2DD8D2F61C0F664900AA15DF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DD1EA141C163CCB006F0CBF /* CoreLocation.framework in Frameworks */,
 				2DD8D3211C0F668400AA15DF /* QuartzCore.framework in Frameworks */,
 				2DD8D31F1C0F667B00AA15DF /* CoreMedia.framework in Frameworks */,
 				2DD8D31D1C0F667500AA15DF /* CoreVideo.framework in Frameworks */,
@@ -87,6 +90,7 @@
 		2DD8D2E71C0F664900AA15DF = {
 			isa = PBXGroup;
 			children = (
+				2DD1EA131C163CCB006F0CBF /* CoreLocation.framework */,
 				2DD8D3241C0F672C00AA15DF /* GPUImage.framework */,
 				2DD8D3201C0F668400AA15DF /* QuartzCore.framework */,
 				2DD8D31E1C0F667B00AA15DF /* CoreMedia.framework */,
@@ -194,6 +198,11 @@
 					2DD8D2EF1C0F664900AA15DF = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = ZAU25MQVWY;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					2DD8D3081C0F664900AA15DF = {
 						CreatedOnToolsVersion = 7.0.1;

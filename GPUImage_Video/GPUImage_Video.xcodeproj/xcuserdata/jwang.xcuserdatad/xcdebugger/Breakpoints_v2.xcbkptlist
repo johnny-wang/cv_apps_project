@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GPUImage_Video/ViewController.mm"
-            timestampString = "470889980.859307"
+            timestampString = "471234239.667633"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "-loadCamera"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GPUImage_Video/ViewController.mm"
-            timestampString = "471197480.417211"
+            timestampString = "471234239.667633"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "-loadVideo"
             landmarkType = "5">
          </BreakpointContent>
@@ -41,14 +41,14 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "GPUImage_Video/ViewController.mm"
-            timestampString = "471199949.511073"
+            filePath = "GPUImage_Video/MyLocationManager.m"
+            timestampString = "471222598.486904"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
-            landmarkName = "-loadVideo"
-            landmarkType = "5">
+            startingLineNumber = "11"
+            endingLineNumber = "11"
+            landmarkName = "locationManager"
+            landmarkType = "19">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
