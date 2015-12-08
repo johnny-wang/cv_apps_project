@@ -63,7 +63,7 @@ using namespace cv;
     Mat textImage;
     
     GPUImageAlphaBlendFilter *blendFilter_name;
-    bool ping_pong;
+    bool ping_pong;    
 }
 
 @end
@@ -127,14 +127,15 @@ using namespace cv;
     {
         locationManager = [[CLLocationManager alloc] init];
         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        //        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
-        locationManager.distanceFilter = 20; // update after moving X meters
+//        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
+        locationManager.distanceFilter = 10; // update after moving X meters
         locationManager.delegate = self;
         if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
             [locationManager requestWhenInUseAuthorization];
         }
         [locationManager startMonitoringSignificantLocationChanges];
         [locationManager startUpdatingLocation];
+        NSLog(@"initialized location manager");
     }
 }
 
@@ -151,7 +152,7 @@ using namespace cv;
 //    videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
     
     GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
-    [blendFilter forceProcessingAtSize:CGSizeMake(1280.0, 720.0)];
+    [blendFilter forceProcessingAtSize:CGSizeMake(1280.0, 768.0)];
     blendFilter.mix = 0.5;
 
     GPUImageHoughTransformLineDetector *lineFilter = [[GPUImageHoughTransformLineDetector alloc] init];
@@ -170,7 +171,7 @@ using namespace cv;
     [videoCamera addTarget:blendFilter];
     
     GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
-    [lineGenerator forceProcessingAtSize:CGSizeMake(1280.0, 720.0)];
+    [lineGenerator forceProcessingAtSize:CGSizeMake(1280.0, 768.0)];
     [lineGenerator setLineColorRed:1.0 green:0.0 blue:0.0];
     
     [(GPUImageHoughTransformLineDetector *)lineFilter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
@@ -243,7 +244,7 @@ using namespace cv;
                 b_value_.clear();
             }
         }
-        std::cout << m_avg_ << " " << b_avg_ << std::endl;
+//        std::cout << m_avg_ << " " << b_avg_ << std::endl;
         
         [lineGenerator renderLinesFromArray:lineArrayNew count:1 frameTime:frameTime];
         
@@ -255,7 +256,7 @@ using namespace cv;
     [blendFilter addTarget:blendFilter_name];
    
     [roadNamePic addTarget:blendFilter_name];
-    [roadNamePic forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,720)];
+    [roadNamePic forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,768)];
     [roadNamePic processImage];
     
     [blendFilter_name addTarget:filterView];
@@ -265,19 +266,20 @@ using namespace cv;
 }
 
 - (void)loadVideo {
-    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"section5_long" ofType:@"MOV"];
+//    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"section4_720" ofType:@"MOV"];
+    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"section5_long_720" ofType:@"MOV"];
     NSURL *fileURL = [NSURL fileURLWithPath:filepath];
     playerItem_ = [[AVPlayerItem alloc] initWithURL:fileURL];
     player_ = [AVPlayer playerWithPlayerItem:playerItem_];
     movieFile_ = [[GPUImageMovie alloc] initWithPlayerItem:playerItem_];
     
-    movieFile_.runBenchmark = YES;
+//    movieFile_.runBenchmark = YES;
     movieFile_.playAtActualSpeed = YES;
     
     movieView_ = [[GPUImageView alloc] initWithFrame:self.view.bounds];
     
     //    CGSize imgSize = currentImage.size;
-    CGSize imgSize = CGSizeMake(1280, 720);
+    CGSize imgSize = CGSizeMake(1280, 768);
     NSLog(@"width = %f x height = %f", imgSize.width, imgSize.height); // 2048 x 1536
     float down_scale = 1.0;   // 0.17             // downscale of image
     
@@ -290,8 +292,8 @@ using namespace cv;
     [scaleFilter forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(width_scale,height_scale)];
     
     GPUImageHoughTransformLineDetector *lineFilter = [[GPUImageHoughTransformLineDetector alloc] init];
-    [lineFilter setEdgeThreshold:0.5];
-    [lineFilter setLineDetectionThreshold:0.5]; // 0.6
+    [lineFilter setEdgeThreshold:0.9];
+    [lineFilter setLineDetectionThreshold:0.6]; // 0.6
 
 /*
     // Try to find lines with only the bottom half of image
@@ -323,7 +325,7 @@ using namespace cv;
     //    [lineDrawFilter forceProcessingAtSize:imgSize];
     
     GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
-    [lineGenerator forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
+    [lineGenerator forceProcessingAtSize:CGSizeMake(768.0, 1280.0)];
     [lineGenerator setLineColorRed:1.0 green:0.0 blue:0.0];
     
     [lineFilter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
@@ -400,10 +402,10 @@ using namespace cv;
         //lineArrayNew[0]=10000;
         //lineArrayNew[1]=-0.5;
         
-        std::cout << m_avg_ << " " << b_avg_ << std::endl;
+//        std::cout << m_avg_ << " " << b_avg_ << std::endl;
         
         [lineGenerator renderLinesFromArray:lineArray count:1 frameTime:frameTime];
-        NSLog(@"lines detected: %ld", (unsigned long)linesDetected);
+//        NSLog(@"lines detected: %ld", (unsigned long)linesDetected);
     }];
     [lineGenerator addTarget:blendFilter atTextureLocation:1];
     
@@ -429,7 +431,14 @@ using namespace cv;
 
 -(void) _refresh
 {
-    NSString *road_name = @"Forbes";
+    NSString *road_name;
+
+    if (thoroughfare == nil) {
+        road_name = @"Forbes";
+    } else {
+        road_name = thoroughfare;
+    }
+
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:300], NSForegroundColorAttributeName: [UIColor whiteColor], NSBackgroundColorAttributeName: [UIColor clearColor]};
     
     roadNameImage = [self imageFromString:road_name attributes:attributes];
@@ -471,14 +480,14 @@ using namespace cv;
             //roadNameImage = [self imageFromString:road_name attributes:attributes];
             roadNamePic1 = [[GPUImagePicture alloc] initWithImage:roadNameImage];
             [roadNamePic1 addTarget:blendFilter_name];
-            [roadNamePic1 forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,720)];
+            [roadNamePic1 forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,768)];
             [roadNamePic1 processImage];
         }
         else
         {
             roadNamePic = [[GPUImagePicture alloc] initWithImage:roadNameImage];
             [roadNamePic addTarget:blendFilter_name];
-            [roadNamePic forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,720)];
+            [roadNamePic forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,768)];
             [roadNamePic processImage];
         
         }
@@ -496,7 +505,7 @@ using namespace cv;
     /*
      roadNamePic = [[GPUImagePicture alloc] initWithImage:roadNameImage];
      [roadNamePic addTarget:blendFilter_name];
-     [roadNamePic forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,720)];
+     [roadNamePic forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,768)];
      [roadNamePic processImage];
      [movieFile_ startProcessing];*/
     //return pts_to;
@@ -531,21 +540,8 @@ using namespace cv;
          }
      }];
     
-    /*
-     // visualization test
-     CGPoint point;
-     point.x = 100;
-     point.y = 100;
-     
-     UIImage *inputImage = [UIImage imageNamed:@"forbes.jpg"];
-     UIImage * ret_img;
-     */
-    
     NSString *addr = [NSString stringWithFormat: @"%@, %@, %@, %@, %@, %@ : %@, %@ ", name, thoroughfare, locality, state, country, postalCode, latitude, longitude];
     NSLog(@"%@", thoroughfare);
-    //    ret_img = [self drawText:addr inImage:inputImage atPoint:point];
-    
-    //    imageView_.image = ret_img;
 }
 
 - (NSString *)getString
