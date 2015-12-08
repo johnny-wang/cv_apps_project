@@ -98,8 +98,8 @@ using namespace std;
                     ];
     ping_pong=true;
     
-    [self loadVideo];
-//    [self loadCamera];
+    //[self loadVideo];
+    [self loadCamera];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -117,31 +117,155 @@ using namespace std;
     [primaryView addSubview:filterView];
     
     videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
-    videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+    videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeRight;
     
     GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
-    [blendFilter forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
+    [blendFilter forceProcessingAtSize:CGSizeMake(1280, 720)];
     blendFilter.mix = 0.5;
-    [videoCamera addTarget:blendFilter];
-    [blendFilter addTarget:filterView];
     
-    filter = [[GPUImageHoughTransformLineDetector alloc] init];
-    [(GPUImageHoughTransformLineDetector *)filter setLineDetectionThreshold:0.60];
-    [videoCamera addTarget:filter];
+    
+    
+    GPUImageHoughTransformLineDetector *lineFilter = [[GPUImageHoughTransformLineDetector alloc] init];
+    [lineFilter setEdgeThreshold:0.9];
+    [lineFilter setLineDetectionThreshold:0.6]; // 0.6
+    
+    
+    //[videoCamera addTarget:blendFilter];
+    //[blendFilter addTarget:filterView];
+    
+    GPUImageWhiteBalanceFilter *wbFilter = [[GPUImageWhiteBalanceFilter alloc] init];
+    wbFilter.temperature=1000;
+    
+    [videoCamera addTarget:wbFilter];
+    //[movieFile_ addTarget:lineFilter];
+    
+    GPUImageHighlightShadowFilter *hsFilter = [[GPUImageHighlightShadowFilter alloc] init];
+    hsFilter.shadows = 0.7;
+    [wbFilter addTarget:hsFilter];
+    
+    
+    [hsFilter addTarget:lineFilter];
 
-    GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
-    [filter addTarget:gammaFilter];
-    [gammaFilter addTarget:blendFilter atTextureLocation:0];
+
+    [videoCamera addTarget:blendFilter];
+    //[video addTarget:filterView];
 
     
     GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
-    [lineGenerator forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
+    [lineGenerator forceProcessingAtSize:CGSizeMake(1280, 720)];
     [lineGenerator setLineColorRed:1.0 green:0.0 blue:0.0];
-    [(GPUImageHoughTransformLineDetector *)filter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
-        [lineGenerator renderLinesFromArray:lineArray count:linesDetected frameTime:frameTime];
+    
+    [(GPUImageHoughTransformLineDetector *)lineFilter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
+        
+        
+        //cout<<lineArray[0]<<endl;
+        NSUInteger ind = 0;
+        NSUInteger normalize_count = 0;
+        GLfloat lineArrayNew[2];
+        lineArrayNew[0]=0;
+        lineArrayNew[1]=0;
+        
+        while(ind<2*linesDetected)
+        {
+            if ((lineArray[ind]<-0.5)&&(lineArray[ind]>-900))
+            {
+                lineArrayNew[0]+=lineArray[ind++];
+                lineArrayNew[1]+=lineArray[ind++];
+                normalize_count++;
+            }
+            else
+                
+            {
+                ind+=2;
+            }
+        }
+        lineArrayNew[0]/=(GLfloat)normalize_count;
+        lineArrayNew[1]/=normalize_count;
+        if(normalize_count!=0)
+        {
+            recal_=0;
+            
+            if (m_value_.size()<5)
+            {
+                m_value_.push_back(lineArrayNew[0]);
+                b_value_.push_back(lineArrayNew[1]);
+                
+                for(size_t i=0; i<m_value_.size();++i)
+                {
+                    m_avg_+=m_value_[i];
+                    b_avg_+=b_value_[i];
+                }
+                m_avg_/=m_value_.size();
+                b_avg_/=b_value_.size();
+            }
+            else
+            {
+                if((abs(lineArrayNew[0]-m_avg_)<1)&&abs(lineArrayNew[1]-b_avg_)<0.3)
+                {
+                    m_value_.push_back(lineArrayNew[0]);
+                    b_value_.push_back(lineArrayNew[1]);
+                    m_value_.pop_front();
+                    b_value_.pop_front();
+                }
+                
+                for(size_t i=0; i<m_value_.size();++i)
+                {
+                    m_avg_+=m_value_[i];
+                    b_avg_+=b_value_[i];
+                }
+                m_avg_/=m_value_.size();
+                b_avg_/=b_value_.size();
+                lineArrayNew[0]=m_avg_;
+                lineArrayNew[1]=b_avg_;
+                
+                
+            }
+        }
+        else
+        {
+            recal_++;
+            if (recal_>=10)
+            {
+                m_value_.clear();
+                b_value_.clear();
+            }
+        }
+        //lineArrayNew[0]=10000;
+        //lineArrayNew[1]=-0.5;
+        
+        cout<<m_avg_<<" "<<b_avg_<<endl;
+        
+        
+        
+        
+        //if [normalize_count>0]
+        [lineGenerator renderLinesFromArray:lineArrayNew count:1 frameTime:frameTime];
+        //NSUInteger
     }];
+    
+    
     [lineGenerator addTarget:blendFilter atTextureLocation:1];
+    //[blendFilter addTarget:filterView];
 
+
+    blendFilter_name = [[GPUImageAlphaBlendFilter alloc] init];
+    blendFilter_name.mix = 0.3;
+    [blendFilter addTarget:blendFilter_name];
+    
+    
+    
+    [roadNamePic addTarget:blendFilter_name];
+    [roadNamePic forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,720)];
+    [roadNamePic processImage];
+    
+    
+    
+    
+    
+    
+    
+    [blendFilter_name addTarget:filterView];
+    
     [videoCamera startCameraCapture];
     videoCamera.runBenchmark = YES;
 
@@ -160,7 +284,7 @@ using namespace std;
     movieView_ = [[GPUImageView alloc] initWithFrame:self.view.bounds];
     
     // Initialize filters
-    GPUImageGrayscaleFilter *grayscaleFilter = [[GPUImageGrayscaleFilter alloc] init];
+    //GPUImageGrayscaleFilter *grayscaleFilter = [[GPUImageGrayscaleFilter alloc] init];
     
     //    CGSize imgSize = currentImage.size;
     CGSize imgSize = CGSizeMake(1280, 720);
@@ -187,7 +311,7 @@ using namespace std;
     [lineFilter setEdgeThreshold:0.9];
     [lineFilter setLineDetectionThreshold:0.6]; // 0.6
     
-    GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:CGRectMake(0.0, 0.0, 0.5, 0.5)];
+    //GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:CGRectMake(0.0, 0.0, 0.5, 0.5)];
     
      /* Scale down for better performance */
 //    [movieFile_ addTarget:grayscaleFilter];

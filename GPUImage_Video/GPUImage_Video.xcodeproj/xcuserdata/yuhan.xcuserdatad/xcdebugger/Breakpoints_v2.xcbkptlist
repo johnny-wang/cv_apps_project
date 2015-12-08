@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GPUImage_Video/ViewController.mm"
-            timestampString = "471236392.03809"
+            timestampString = "471252367.949983"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
+            startingLineNumber = "459"
+            endingLineNumber = "459"
             landmarkName = "-loadVideo"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GPUImage_Video/ViewController.mm"
-            timestampString = "471236392.03809"
+            timestampString = "471252367.949983"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
+            startingLineNumber = "456"
+            endingLineNumber = "456"
             landmarkName = "-loadVideo"
             landmarkType = "5">
             <Locations>
@@ -105,13 +105,61 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GPUImage_Video/ViewController.mm"
-            timestampString = "471236392.03809"
+            timestampString = "471252367.949983"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
+            startingLineNumber = "379"
+            endingLineNumber = "379"
             landmarkName = "-loadVideo"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GPUImage_Video/ViewController.mm"
+            timestampString = "471252340.009727"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
+            landmarkName = "-loadCamera"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[ViewController loadCamera]"
+                  moduleName = "GPUImage_Video"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yuhan/Documents/CVAPPs/project/cv_apps_project-gpu_camera/GPUImage_Video/GPUImage_Video/ViewController.mm"
+                  timestampString = "471252368.996781"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "158"
+                  endingLineNumber = "158"
+                  offsetFromSymbolStart = "884">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__28-[ViewController loadCamera]_block_invoke"
+                  moduleName = "GPUImage_Video"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yuhan/Documents/CVAPPs/project/cv_apps_project-gpu_camera/GPUImage_Video/GPUImage_Video/ViewController.mm"
+                  timestampString = "471252368.997654"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "165"
+                  endingLineNumber = "165"
+                  offsetFromSymbolStart = "56">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
