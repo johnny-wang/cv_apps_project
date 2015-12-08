@@ -20,6 +20,7 @@
 		2DD8D31F1C0F667B00AA15DF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D31E1C0F667B00AA15DF /* CoreMedia.framework */; };
 		2DD8D3211C0F668400AA15DF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D3201C0F668400AA15DF /* QuartzCore.framework */; };
 		2DD8D3251C0F672C00AA15DF /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D3241C0F672C00AA15DF /* GPUImage.framework */; };
+		56BD8CAC1C16A4F70093618F /* section2_small.mov in Resources */ = {isa = PBXBuildFile; fileRef = 56BD8CAB1C16A4F70093618F /* section2_small.mov */; settings = {ASSET_TAGS = (); }; };
 		56F8D8961C15FD19004F76C4 /* homographyUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 56F8D8941C15FD19004F76C4 /* homographyUtil.cpp */; settings = {ASSET_TAGS = (); }; };
 		56F8D8981C15FE6B004F76C4 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F8D8971C15FE6B004F76C4 /* opencv2.framework */; };
 		56F8D89D1C168356004F76C4 /* section2.MOV in Resources */ = {isa = PBXBuildFile; fileRef = 56F8D8991C168356004F76C4 /* section2.MOV */; settings = {ASSET_TAGS = (); }; };
@@ -58,6 +59,7 @@
 		2DD8D31E1C0F667B00AA15DF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		2DD8D3201C0F668400AA15DF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2DD8D3241C0F672C00AA15DF /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GPUImage.framework; sourceTree = "<group>"; };
+		56BD8CAB1C16A4F70093618F /* section2_small.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = section2_small.mov; path = movies/section2_small.mov; sourceTree = "<group>"; };
 		56F8D8941C15FD19004F76C4 /* homographyUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = homographyUtil.cpp; sourceTree = "<group>"; };
 		56F8D8951C15FD19004F76C4 /* homographyUtil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = homographyUtil.hpp; sourceTree = "<group>"; };
 		56F8D8971C15FE6B004F76C4 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 		2DD8D2F31C0F664900AA15DF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				56BD8CAB1C16A4F70093618F /* section2_small.mov */,
 				56F8D8991C168356004F76C4 /* section2.MOV */,
 				56F8D89A1C168356004F76C4 /* test_short.mp4 */,
 				56F8D89B1C168356004F76C4 /* test_whole.mp4 */,
@@ -246,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DD8D3031C0F664900AA15DF /* LaunchScreen.storyboard in Resources */,
+				56BD8CAC1C16A4F70093618F /* section2_small.mov in Resources */,
 				56F8D89F1C168356004F76C4 /* test_whole.mp4 in Resources */,
 				2DD8D3001C0F664900AA15DF /* Assets.xcassets in Resources */,
 				56F8D8A01C168356004F76C4 /* section4_small.mov in Resources */,

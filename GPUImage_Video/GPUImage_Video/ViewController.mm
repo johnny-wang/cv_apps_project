@@ -251,7 +251,7 @@ using namespace std;
 
         while(ind<2*linesDetected)
         {
-            if ((lineArray[ind]<-0.1)&&(lineArray[ind]>-900))
+            if ((lineArray[ind]<-0.5)&&(lineArray[ind]>-900))
             {
                 lineArrayNew[0]+=lineArray[ind++];
                 lineArrayNew[1]+=lineArray[ind++];
@@ -385,15 +385,19 @@ using namespace std;
 -(void) _refresh
 {
 //={Point2f(width*3/8,height*3/4),Point2f(width*1/4,height*7/8),Point2f(width*5/8,height*3/4),Point2f(width*3/4,height*7/8)};
-
+    NSString *road_name =@"Forbes";
+    NSDictionary *attributes = @{NSFontAttributeName            : [UIFont systemFontOfSize:300],
+                                 NSForegroundColorAttributeName : [UIColor whiteColor],
+                                 NSBackgroundColorAttributeName : [UIColor clearColor]};
+    
+    
+    roadNameImage = [self imageFromString:road_name attributes:attributes];
     pts_to.clear();
     Point2f pt_tmp;
     
-    double rows = 720;
-    double cols = 1280;
     
-    double height = 720;
-    double width = 1280;
+    double rows = textImage.rows;
+    double cols = textImage.cols;
     
     pt_tmp.x = ((0.5-b_avg_)/m_avg_+1)/2*cols;
     pt_tmp.y = (0.5+1)/2*rows;
@@ -410,21 +414,27 @@ using namespace std;
     pt_tmp.x = ((0.75-b_avg_)/(-m_avg_)+1)/2*cols;
     pt_tmp.y = (0.75+1)/2*rows;
     pts_to.push_back(pt_tmp);
+    if ((pts_to[0].x<pts_to[3].x)&&(pts_to[0].y<pts_to[3].y))
+    {
+        
+    //cout<<pts_to[0].x<<" "<<pts_to[0].y<<endl;
+    //cout<<pts_to[1].x<<" "<<pts_to[1].y<<endl;
+    //cout<<pts_to[2].x<<" "<<pts_to[2].y<<endl;
+    //cout<<pts_to[3].x<<" "<<pts_to[3].y<<endl;
+
     
     
     vector<Point2f> pts_from={Point2f(0,0),Point2f(0,textImage.rows),Point2f(textImage.cols,0),Point2f(textImage.cols,textImage.rows)};
     
-        pts_to={Point2f(width*3/8,height*3/4),Point2f(width*1/4,height*7/8),Point2f(width*5/8,height*3/4),Point2f(width*3/4,height*7/8)};
+    
     Mat homography_mat = findHomography(pts_from,pts_to,0);
+    textImage = [self cvMatFromUIImage:roadNameImage];
+
     warpPerspective(textImage,textImage,homography_mat,textImage.size() );
-    
     roadNameImage=[self UIImageFromCVMat:textImage];
-    
     if(ping_pong)
     {
 
-    //roadNameImage = [self imageFromString:road_name attributes:attributes];
-    
     
     roadNamePic1 = [[GPUImagePicture alloc] initWithImage:roadNameImage];
     [roadNamePic1 addTarget:blendFilter_name];
@@ -433,8 +443,21 @@ using namespace std;
     }
     else
     {
+        /*
+        NSString *road_name =@"Forbes";
+        NSDictionary *attributes = @{NSFontAttributeName            : [UIFont systemFontOfSize:300],
+                                     NSForegroundColorAttributeName : [UIColor whiteColor],
+                                     NSBackgroundColorAttributeName : [UIColor clearColor]};
         
         
+        roadNameImage = [self imageFromString:road_name attributes:attributes];
+        Mat homography_mat = findHomography(pts_from,pts_to,0);
+        textImage = [self cvMatFromUIImage:roadNameImage];
+
+        warpPerspective(textImage,textImage,homography_mat,textImage.size() );
+        
+        roadNameImage=[self UIImageFromCVMat:textImage];
+        */
         roadNamePic = [[GPUImagePicture alloc] initWithImage:roadNameImage];
         [roadNamePic addTarget:blendFilter_name];
         [roadNamePic forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(1280,720)];
@@ -443,7 +466,7 @@ using namespace std;
     }
     
     ping_pong = !ping_pong;
-    
+    }
     
 /*
     warpPerspective(textImage,textImage,homography_mat,textImage.size() );
