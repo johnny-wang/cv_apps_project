@@ -25,6 +25,7 @@
 		2DD8D2DB1C0DFE2F00AA15DF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D2DA1C0DFE2F00AA15DF /* CoreLocation.framework */; };
 		2DD8D2DF1C0DFE5900AA15DF /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D2DE1C0DFE5900AA15DF /* Accelerate.framework */; };
 		2DD8D2E31C0E006500AA15DF /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2DD8D2E21C0E006500AA15DF /* test.mp4 */; };
+		2DF42B6A1C16B2FD008364D6 /* section5_long.MOV in Resources */ = {isa = PBXBuildFile; fileRef = 2DF42B691C16B2FD008364D6 /* section5_long.MOV */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		2DD8D2DA1C0DFE2F00AA15DF /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		2DD8D2DE1C0DFE5900AA15DF /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		2DD8D2E21C0E006500AA15DF /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
+		2DF42B691C16B2FD008364D6 /* section5_long.MOV */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = section5_long.MOV; path = ../../../project/ipad_stuff/section5_long.MOV; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 		2DD8D2B11C0DFE1300AA15DF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2DF42B691C16B2FD008364D6 /* section5_long.MOV */,
 				2DD1EA0C1C14DCD8006F0CBF /* section2.MOV */,
 				2DD1EA071C14DB1C006F0CBF /* homographyUtil.cpp */,
 				2DD1EA081C14DB1C006F0CBF /* homographyUtil.hpp */,
@@ -235,6 +238,7 @@
 			files = (
 				2DD8D2C11C0DFE1300AA15DF /* LaunchScreen.storyboard in Resources */,
 				2D6A7E321C10DBCB0015C83C /* test_whole.mp4 in Resources */,
+				2DF42B6A1C16B2FD008364D6 /* section5_long.MOV in Resources */,
 				2DD8D2BE1C0DFE1300AA15DF /* Assets.xcassets in Resources */,
 				2DD1EA0D1C14DCD8006F0CBF /* section2.MOV in Resources */,
 				2DD8D2BC1C0DFE1300AA15DF /* Main.storyboard in Resources */,
