@@ -24,6 +24,7 @@
 		2DD8D3251C0F672C00AA15DF /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD8D3241C0F672C00AA15DF /* GPUImage.framework */; };
 		2DD8D35A1C0F792C00AA15DF /* test_short.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2DD8D3591C0F792C00AA15DF /* test_short.mp4 */; };
 		2DD8D35C1C0FC8B500AA15DF /* test_whole.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2DD8D35B1C0FC8B500AA15DF /* test_whole.mp4 */; };
+		2DF42B681C167DCC008364D6 /* forbes.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DF42B671C167DCC008364D6 /* forbes.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		2DD8D3241C0F672C00AA15DF /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GPUImage.framework; sourceTree = "<group>"; };
 		2DD8D3591C0F792C00AA15DF /* test_short.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test_short.mp4; sourceTree = "<group>"; };
 		2DD8D35B1C0FC8B500AA15DF /* test_whole.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test_whole.mp4; sourceTree = "<group>"; };
+		2DF42B671C167DCC008364D6 /* forbes.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = forbes.jpg; path = ../../forbes.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 		2DD8D2F31C0F664900AA15DF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2DF42B671C167DCC008364D6 /* forbes.jpg */,
 				2DD1EA111C155232006F0CBF /* section2.MOV */,
 				2DD8D35B1C0FC8B500AA15DF /* test_whole.mp4 */,
 				2DD8D3591C0F792C00AA15DF /* test_short.mp4 */,
@@ -237,6 +240,7 @@
 				2DD8D35A1C0F792C00AA15DF /* test_short.mp4 in Resources */,
 				2DD8D3031C0F664900AA15DF /* LaunchScreen.storyboard in Resources */,
 				2DD8D35C1C0FC8B500AA15DF /* test_whole.mp4 in Resources */,
+				2DF42B681C167DCC008364D6 /* forbes.jpg in Resources */,
 				2DD1EA121C155232006F0CBF /* section2.MOV in Resources */,
 				2DD8D3001C0F664900AA15DF /* Assets.xcassets in Resources */,
 				2DD8D2FE1C0F664900AA15DF /* Main.storyboard in Resources */,

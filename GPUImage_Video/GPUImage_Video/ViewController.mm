@@ -170,7 +170,6 @@
     // draw lines
     GPUImageLineGenerator *lineDrawFilter = [[GPUImageLineGenerator alloc] init];
 //    [lineDrawFilter forceProcessingAtSize:imgSize];
-//    [lineDrawFilter addTarget:blendFilter];
     
     GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
     [lineGenerator forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
