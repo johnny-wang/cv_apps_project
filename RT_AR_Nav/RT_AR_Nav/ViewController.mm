@@ -6,16 +6,39 @@
 //  Copyright © 2015 CV_Apps. All rights reserved.
 //
 
-#import "ViewController.h"  // this HAS TO come before homographyUtil
+#import "ViewController.h"
+#import <GPUImage/GPUImage.h>
 
 @interface ViewController () {    
-    
+    // Setup the view
+    GPUImageView *imageView_;
     AVPlayerItem *playerItem_;
     AVPlayer *player_;
-    UIImageView *imageView_;
+    GPUImageMovie *movieFile_;
+    GPUImageView *movieView_;
     
-    NSString *filePath_;
-    NSURL *fileURL_;
+    GPUImageView *filterView;
+    GPUImageVideoCamera *videoCamera;
+    GPUImageOutput<GPUImageInput> *filter;
+    
+    // For geolocation
+    UIImage *street_name;
+    CLLocationManager *locationManager;
+    CLGeocoder *geocoder;
+    CLPlacemark *placemark;
+    NSString *latitude;
+    NSString *longitude;
+    NSString *name; // eg. Apple Inc.
+    NSString *thoroughfare; // street name, eg. Infinite Loop
+    NSString *subThoroughfare; // eg. 1
+    NSString *locality; // city, eg. Cupertino
+    NSString *subLocality; // neighborhood, common name, eg. Mission District
+    NSString *state; // state, eg. CA
+    NSString *subAdministrativeArea; // county, eg. Santa Clara
+    NSString *postalCode; // zip code, eg. 95014
+    NSString *country; // eg. US
+    NSString *inlandWater; // eg. Lake Tahoe
+    NSString *ocean; // eg. Pacific Ocean
 }
 
 @end
@@ -26,8 +49,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [self openVideo];
-//    [self processVideo];
+    [self initLocation];
+    
+    [self loadVideo];
+    //    [self loadCamera];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,271 +60,200 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)openVideo {
-    filePath_ = [[NSBundle mainBundle] pathForResource:@"section2" ofType:@"MOV"];
-    fileURL_ = [NSURL fileURLWithPath:filePath_];
-    player_ = [AVPlayer playerWithURL:fileURL_];
+- (void)initLocation {
+    geocoder = [[CLGeocoder alloc] init];
     
-    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player_];
-    player_.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-    layer.frame = CGRectMake(0, 0, 1024, 768);
-    [self.view.layer addSublayer: layer];
+    if (locationManager == nil)
+    {
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        //        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
+        locationManager.distanceFilter = 20; // update after moving X meters
+        locationManager.delegate = self;
+        if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [locationManager requestWhenInUseAuthorization];
+        }
+        [locationManager startMonitoringSignificantLocationChanges];
+        [locationManager startUpdatingLocation];
+    }
+}
+
+- (void)loadCamera {
+    CGRect mainScreenFrame = [[UIScreen mainScreen] applicationFrame];
+    UIView *primaryView = [[UIView alloc] initWithFrame:mainScreenFrame];
+    //    primaryView.backgroundColor = [UIColor blueColor];
+    self.view = primaryView;
+    
+    filterView = [[GPUImageView alloc] initWithFrame:CGRectMake(primaryView.frame.origin.x, primaryView.frame.origin.y, primaryView.frame.size.width, primaryView.frame.size.height)];
+    [primaryView addSubview:filterView];
+    
+    videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset1280x720 cameraPosition:AVCaptureDevicePositionBack];
+    videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+    
+    GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
+    [blendFilter forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
+    blendFilter.mix = 0.5;
+    [videoCamera addTarget:blendFilter];
+    [blendFilter addTarget:filterView];
+    
+    filter = [[GPUImageHoughTransformLineDetector alloc] init];
+    [(GPUImageHoughTransformLineDetector *)filter setLineDetectionThreshold:0.60];
+    [videoCamera addTarget:filter];
+    
+    GPUImageGammaFilter *gammaFilter = [[GPUImageGammaFilter alloc] init];
+    [filter addTarget:gammaFilter];
+    [gammaFilter addTarget:blendFilter atTextureLocation:0];
+    
+    GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
+    [lineGenerator forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
+    [lineGenerator setLineColorRed:1.0 green:0.0 blue:0.0];
+    [(GPUImageHoughTransformLineDetector *)filter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
+        [lineGenerator renderLinesFromArray:lineArray count:linesDetected frameTime:frameTime];
+    }];
+    [lineGenerator addTarget:blendFilter atTextureLocation:1];
+    
+    [videoCamera startCameraCapture];
+    videoCamera.runBenchmark = YES;
+}
+
+- (void)loadVideo {
+    NSString *filepath = [[NSBundle mainBundle] pathForResource:@"section2" ofType:@"MOV"];
+    NSURL *fileURL = [NSURL fileURLWithPath:filepath];
+    playerItem_ = [[AVPlayerItem alloc] initWithURL:fileURL];
+    player_ = [AVPlayer playerWithPlayerItem:playerItem_];
+    movieFile_ = [[GPUImageMovie alloc] initWithPlayerItem:playerItem_];
+    
+    movieFile_.runBenchmark = YES;
+    movieFile_.playAtActualSpeed = YES;
+    
+    movieView_ = [[GPUImageView alloc] initWithFrame:self.view.bounds];
+    
+    // Initialize filters
+    GPUImageGrayscaleFilter *grayscaleFilter = [[GPUImageGrayscaleFilter alloc] init];
+    
+    //    CGSize imgSize = currentImage.size;
+    CGSize imgSize = CGSizeMake(1280, 720);
+    NSLog(@"width = %f x height = %f", imgSize.width, imgSize.height); // 2048 x 1536
+    float down_scale = 1.0;   // 0.17             // downscale of image
+    
+    // Set filter variables
+    // scale/resize image
+    GPUImageLanczosResamplingFilter *scaleFilter = [[GPUImageLanczosResamplingFilter alloc] init];
+    float width_scale = imgSize.width * down_scale;
+    float height_scale = imgSize.height * down_scale;
+    NSLog(@"downscale: %f x %f", width_scale, height_scale);
+    [scaleFilter forceProcessingAtSizeRespectingAspectRatio:CGSizeMake(width_scale,height_scale)];
+    
+    // blur
+    GPUImageGaussianBlurFilter *gausFilter = [[GPUImageGaussianBlurFilter alloc] init];
+    float blur_radius = 1;  // 1                // Gaussian blur in pixels
+    [gausFilter setBlurRadiusInPixels:blur_radius];
+    
+    GPUImageHoughTransformLineDetector *lineFilter = [[GPUImageHoughTransformLineDetector alloc] init];
+    [lineFilter setEdgeThreshold:0.5];
+    [lineFilter setLineDetectionThreshold:0.5]; // 0.6
+    
+    // Try to find lines with only the bottom half of image
+    GPUImageCropFilter *cropFilter = [[GPUImageCropFilter alloc] initWithCropRegion:CGRectMake(0, 0, 0.5, 0.5)];
+    [movieFile_ addTarget:cropFilter];
+    [cropFilter addTarget:lineFilter];
+    
+    /* Use just this to see all the Hough lines */
+    //    [movieFile_ addTarget:lineFilter];
+    
+    GPUImageAlphaBlendFilter *blendFilter = [[GPUImageAlphaBlendFilter alloc] init];
+    blendFilter.mix = 0.5;
+    //    [blendFilter forceProcessingAtSize:imgSize];
+    
+    [movieFile_ addTarget:blendFilter];
+    
+    // draw lines
+    GPUImageLineGenerator *lineDrawFilter = [[GPUImageLineGenerator alloc] init];
+    //    [lineDrawFilter forceProcessingAtSize:imgSize];
+    
+    GPUImageLineGenerator *lineGenerator = [[GPUImageLineGenerator alloc] init];
+    [lineGenerator forceProcessingAtSize:CGSizeMake(720.0, 1280.0)];
+    [lineGenerator setLineColorRed:1.0 green:0.0 blue:0.0];
+    
+    [lineFilter setLinesDetectedBlock:^(GLfloat* lineArray, NSUInteger linesDetected, CMTime frameTime){
+        [lineGenerator renderLinesFromArray:lineArray count:linesDetected frameTime:frameTime];
+        NSLog(@"lines detected: %ld", (unsigned long)linesDetected);
+    }];
+    [lineGenerator addTarget:blendFilter atTextureLocation:1];
+    
+    [blendFilter addTarget:movieView_];
+    
+    [self.view addSubview:movieView_];
+    [self.view sendSubviewToBack:movieView_];
+    
+    player_.rate = 1.0;
+    
+    [movieFile_ startProcessing];
     
     [player_ play];
 }
 
-- (void)processVideo {
-    
-    playerItem_ = [[AVPlayerItem alloc] initWithURL:fileURL_];
-    player_ = [AVPlayer playerWithPlayerItem:playerItem_];
-    
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:fileURL_ options:nil];
-    AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-    gen.appliesPreferredTrackTransform = YES;
-    
-    imageView_ = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view addSubview:imageView_];
-    imageView_.contentMode = UIViewContentModeScaleAspectFit;
-    
-    // Display 10 frames per second
-    CMTime vid_length = asset.duration;
-    float seconds = CMTimeGetSeconds(vid_length);
-    
-    int required_frames_count = seconds * 10;
-    int64_t step = vid_length.value / required_frames_count;
-    
-    int value = 0;
-    
-    for (int i = 0; i < required_frames_count; i++) {
-        
-        AVAssetImageGenerator *image_generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        image_generator.requestedTimeToleranceAfter = kCMTimeZero;
-        image_generator.requestedTimeToleranceBefore = kCMTimeZero;
-        
-        CMTime time = CMTimeMake(value, vid_length.timescale);
-        
-        CGImageRef image_ref = [image_generator copyCGImageAtTime:time actualTime:NULL error:NULL];
-        UIImage *thumb = [UIImage imageWithCGImage:image_ref];
-        CGImageRelease(image_ref);
-        NSString *filename = [NSString stringWithFormat:@"frame_%d.png", i];
-        NSString *pngPath = [NSHomeDirectory() stringByAppendingPathComponent:filename];
-        
-        [UIImagePNGRepresentation(thumb) writeToFile:pngPath atomically:YES];        
-        
-        imageView_.image = [self processImage:thumb];
-        
-        value += step;
-        
-        NSLog(@"%d: %@", value, pngPath);
-    }
-}
-
-- (UIImage *)processImage:(UIImage *)inputImage
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation
 {
-    Mat roadImage = [self cvMatFromUIImage:inputImage];
-    double t = (double)getTickCount();
+    CLLocationCoordinate2D here = newLocation.coordinate;
+    NSLog(@"%f %f ", here.latitude, here.longitude);
     
-    // convert the road name to a image
-    Mat textImage = cvMatFromString_cv("FORBES");
+    // below is added 151204
+    [geocoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if (error == nil && ([placemarks count] > 0))
+         {
+             placemark = [placemarks lastObject];
+             latitude = [NSString stringWithFormat:@"%.5f",newLocation.coordinate.latitude];
+             longitude = [NSString stringWithFormat:@"%.5f",newLocation.coordinate.longitude];
+             
+             name = placemark.name;
+             thoroughfare = placemark.thoroughfare;
+             locality = placemark.locality;
+             state = placemark.administrativeArea;
+             country = placemark.country;
+             postalCode = placemark.postalCode;
+             
+         } else
+         {
+             NSLog(@"loc bug %@", error.debugDescription);
+         }
+     }];
     
-    // Initialize road name boundary points
-    // [TODO] Automate this
-    vector<Point2f> pts_from={Point2f(0,0),Point2f(0,textImage.rows),Point2f(textImage.cols,0),Point2f(textImage.cols,textImage.rows)};
-    vector<Point2f> pts_to={Point2f(500,456),Point2f(392,522),Point2f(805,450),Point2f(840,517)};
-    
-    // Test code for boundary estimation
-    
-    Mat roadImageGray;
-    
-    cvtColor(roadImage, roadImageGray, CV_BGR2GRAY);
-    cv::Rect roi(roadImageGray.cols/2-200,roadImageGray.rows/2, 400, roadImageGray.rows/2);
-    Mat roadImageGaussian=roadImageGray(roi);
-    
-    vector<Vec2f> lines;
-    //Mat roadImageGray;
-    
-    GaussianBlur(roadImageGaussian, roadImageGaussian, cv::Size(15,15), 5);
-    resize(roadImageGaussian,roadImageGaussian,cv::Size(),0.5,0.5);
-    Canny(roadImageGaussian, roadImageGaussian, 0, 50, 3);
-    resize(roadImageGaussian,roadImageGaussian,cv::Size(),2,2,INTER_CUBIC);
-    HoughLines(roadImageGaussian, lines, 1, CV_PI/180, 200, 0, 0 );
-    cvtColor(roadImageGaussian, roadImageGaussian, CV_GRAY2BGR);
-    
-    vector<float> angle_range(180/5,0);
-    vector<float> r_range(180/5,0);
-    
-    for( size_t i = 0; i < lines.size(); i++ )
-    {
-        float rho = lines[i][0], theta = lines[i][1];
-        if(abs(abs(theta)-CV_PI/2)>CV_PI/18)
-        {
-            
-            size_t ind=floor((theta)/(CV_PI/36));
-            cout<<ind<<endl;
-            angle_range[ind]=theta;
-            r_range[ind]=rho;
-        }
-    }
-    
-    float left_most_line_rho=0.0f;;
-    float left_most_line_theta=0.0f;
-    float right_most_line_rho=0.0f;
-    float right_most_line_theta=0.0f;
-    
-    for(size_t i=8; i<36-7;++i)
-    {
-        if(angle_range[i]!=0)
-        {
-            left_most_line_rho=r_range[i];
-            left_most_line_theta=angle_range[i];
-            break;
-        }
-    }
-    
-    
-    for(int i=36-7; i>=8;--i)
-    {
-        if(angle_range[i]!=0)
-        {
-            right_most_line_rho=r_range[i];
-            right_most_line_theta=angle_range[i];
-            break;
-        }
-    }
-    
-    vector<Vec2f> lines_filtered;
-    if(right_most_line_rho==left_most_line_rho)
-        cout<<"no plane detected"<<endl;
-    else
-    {
-        lines_filtered.push_back(Vec2f(left_most_line_rho,left_most_line_theta));
-        lines_filtered.push_back(Vec2f(right_most_line_rho,right_most_line_theta));
-    }
-    
-    vector<Point2f> pt_to;
-    
-    for( size_t i = 0; i < lines_filtered.size(); i++ )
-    {
-        float rho = lines_filtered[i][0], theta = lines_filtered[i][1];
-        cv::Point pt1, pt2;
-        double a = cos(theta), b = sin(theta);
-        double x0 = a*rho, y0 = b*rho;
-        pt1.x = cvRound(x0 + 3000*(-b))+roadImageGray.cols/2-200;
-        pt1.y = cvRound(y0 + 3000*(a))+roadImageGray.rows/2;
-        pt2.x = cvRound(x0 - 3000*(-b))+roadImageGray.cols/2-200;
-        pt2.y = cvRound(y0 - 3000*(a))+roadImageGray.rows/2;
-        
-        //calculate the pt_to
-        
-        float _y1 = 5*roadImage.rows/6;
-        float _y2 = roadImage.rows;
-        
-        float _ratio = ((float)pt1.x-(float)pt2.x)/((float)pt1.y-(float)pt2.y);
-        
-        float _x1 = pt1.x-((pt1.y-_y1)*_ratio);
-        float _x2 = pt1.x-((pt1.y-_y2)*_ratio);
-        
-        cout<<_x1<<" "<<_y1<<" "<<_x2<<" "<<_y2<<endl;
-        pt_to.push_back(Point2f(_x1,_y1));
-        pt_to.push_back(Point2f(_x2,_y2));
-        
-        //line( roadImage, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
-    }
-    
-    cout<<lines_filtered.size()<<endl;
-    
-    // Find homography
-    Mat H;
-    fitHomography(pts_from, pt_to, H);
-    cout<<H<<endl;
-    
-    // Project the warped road name
-    Mat resultImage;
-    projHomography(roadImage, textImage, resultImage, H);
-    
-    t = ((double)getTickCount() - t)/getTickFrequency();
-    cout<<"Time: "<<t<<"s"<<endl;
-    
-    // Display the image
-    imageView_ = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
-    [self.view addSubview:imageView_];
-    imageView_.contentMode = UIViewContentModeScaleAspectFit;
-    
-    //   imageView_.image = [self UIImageFromCVMat:resultImage];
-    UIImage *ret_img = [self UIImageFromCVMat:resultImage];
-    return ret_img;
-}
-
-- (cv::Mat)cvMatFromString:(NSString *)text
-{
-    /** This function is for convering the text into the cvMat format
-     * There is probably a better solution to use opencv put text function
-     * Not used in current code
+    /*
+     // visualization test
+     CGPoint point;
+     point.x = 100;
+     point.y = 100;
+     
+     UIImage *inputImage = [UIImage imageNamed:@"forbes.jpg"];
+     UIImage * ret_img;
      */
-    Mat stringImage;
-    return stringImage;
+    
+    NSString *addr = [NSString stringWithFormat: @"%@, %@, %@, %@, %@, %@ : %@, %@ ", name, thoroughfare, locality, state, country, postalCode, latitude, longitude];
+    NSLog(@"%@", thoroughfare);
+    //    ret_img = [self drawText:addr inImage:inputImage atPoint:point];
+    
+    //    imageView_.image = ret_img;
 }
 
-- (cv::Mat)cvMatFromUIImage:(UIImage *)image
+- (UIImage*) drawText:(NSString*) text
+              inImage:(UIImage*)  image
+              atPoint:(CGPoint)   point
 {
-    CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
-    CGFloat cols = image.size.width;
-    CGFloat rows = image.size.height;
     
-    cv::Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels (color channels + alpha)
+    UIFont *font = [UIFont boldSystemFontOfSize:12];
+    UIGraphicsBeginImageContext(image.size);
+    [image drawInRect:CGRectMake(0,0,image.size.width,image.size.height)];
+    CGRect rect = CGRectMake(point.x, point.y, image.size.width, image.size.height);
+    [[UIColor whiteColor] set];
+    [text drawInRect:CGRectIntegral(rect) withFont:font];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
     
-    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to  data
-                                                    cols,                       // Width of bitmap
-                                                    rows,                       // Height of bitmap
-                                                    8,                          // Bits per component
-                                                    cvMat.step[0],              // Bytes per row
-                                                    colorSpace,                 // Colorspace
-                                                    kCGImageAlphaNoneSkipLast |
-                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
-    
-    CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
-    CGContextRelease(contextRef);
-    
-    return cvMat;
+    return newImage;
 }
-
-// Member functions for converting from UIImage to cvMat
--(UIImage *)UIImageFromCVMat:(cv::Mat)cvMat
-{
-    NSData *data = [NSData dataWithBytes:cvMat.data length:cvMat.elemSize()*cvMat.total()];
-    CGColorSpaceRef colorSpace;
-    
-    if (cvMat.elemSize() == 1) {
-        colorSpace = CGColorSpaceCreateDeviceGray();
-    } else {
-        colorSpace = CGColorSpaceCreateDeviceRGB();
-    }
-    
-    CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
-    
-    // Creating CGImage from cv::Mat
-    CGImageRef imageRef = CGImageCreate(cvMat.cols,                                 //width
-                                        cvMat.rows,                                 //height
-                                        8,                                          //bits per component
-                                        8 * cvMat.elemSize(),                       //bits per pixel
-                                        cvMat.step[0],                            //bytesPerRow
-                                        colorSpace,                                 //colorspace
-                                        kCGImageAlphaNone|kCGBitmapByteOrderDefault,// bitmap info
-                                        provider,                                   //CGDataProviderRef
-                                        NULL,                                       //decode
-                                        false,                                      //should interpolate
-                                        kCGRenderingIntentDefault                   //intent
-                                        );
-    
-    
-    // Getting UIImage from CGImage
-    UIImage *finalImage = [UIImage imageWithCGImage:imageRef];
-    CGImageRelease(imageRef);
-    CGDataProviderRelease(provider);
-    CGColorSpaceRelease(colorSpace);
-    
-    return finalImage;
-}
-
 
 @end

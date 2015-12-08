@@ -8,11 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import <AVFoundation/AVFoundation.h>
-#include "opencv2/opencv.hpp"
-#include "homographyUtil.hpp"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<CLLocationManagerDelegate>
 
 
 @end
