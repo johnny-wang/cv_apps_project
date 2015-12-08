@@ -34,6 +34,11 @@ using namespace cv;
     NSString *longitude;
     NSString *name; // eg. Apple Inc.
     NSString *thoroughfare; // street name, eg. Infinite Loop
+    NSString *cur_road;     // current road traveling on
+    NSString *left_road;    // upcoming road to the left
+    NSString *right_road;   // upcoming road to the right
+    
+    /*
     NSString *subThoroughfare; // eg. 1
     NSString *locality; // city, eg. Cupertino
     NSString *subLocality; // neighborhood, common name, eg. Mission District
@@ -42,7 +47,8 @@ using namespace cv;
     NSString *postalCode; // zip code, eg. 95014
     NSString *country; // eg. US
     NSString *inlandWater; // eg. Lake Tahoe
-    NSString *ocean; // eg. Pacific Ocean
+     */
+
     
     /*** For road name projection ***/
     UIImage *roadNameImage;
@@ -63,7 +69,17 @@ using namespace cv;
     Mat textImage;
     
     GPUImageAlphaBlendFilter *blendFilter_name;
-    bool ping_pong;    
+    bool ping_pong;
+    
+    /** get cross street names **/
+    bool initialized_coord;
+    float last_longitude;
+    float last_latitude;
+    
+    CLPlacemark *placemark_left;
+    CLPlacemark *placemark_right;
+    CLGeocoder *geocoder_left;
+    CLGeocoder *geocoder_right;
 }
 
 @end
@@ -118,17 +134,20 @@ using namespace cv;
                     repeats:YES
                     ];
     ping_pong=true;
+    initialized_coord = false;
 }
 
 - (void)initLocation {
     geocoder = [[CLGeocoder alloc] init];
+    geocoder_left = [[CLGeocoder alloc] init];
+    geocoder_right = [[CLGeocoder alloc] init];
     
     if (locationManager == nil)
     {
         locationManager = [[CLLocationManager alloc] init];
         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
 //        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
-        locationManager.distanceFilter = 10; // update after moving X meters
+        locationManager.distanceFilter = 1; // update after moving X meters
         locationManager.delegate = self;
         if ([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
             [locationManager requestWhenInUseAuthorization];
@@ -433,10 +452,10 @@ using namespace cv;
 {
     NSString *road_name;
 
-    if (thoroughfare == nil) {
+    if (cur_road == nil) {
         road_name = @"Forbes";
     } else {
-        road_name = thoroughfare;
+        road_name = cur_road;
     }
 
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:300], NSForegroundColorAttributeName: [UIColor whiteColor], NSBackgroundColorAttributeName: [UIColor clearColor]};
@@ -515,8 +534,14 @@ using namespace cv;
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
+    
+//#define DEBUG_lookahead
+    
     CLLocationCoordinate2D here = newLocation.coordinate;
+    
+#ifdef DEBUG_lookahead
     NSLog(@"%f %f ", here.latitude, here.longitude);
+#endif
     
     // below is added 151204
     [geocoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error)
@@ -528,20 +553,92 @@ using namespace cv;
              longitude = [NSString stringWithFormat:@"%.5f",newLocation.coordinate.longitude];
              
              name = placemark.name;
-             thoroughfare = placemark.thoroughfare;
-             locality = placemark.locality;
-             state = placemark.administrativeArea;
-             country = placemark.country;
-             postalCode = placemark.postalCode;
+             cur_road = placemark.thoroughfare;
              
          } else
          {
              NSLog(@"loc bug %@", error.debugDescription);
          }
      }];
+     NSLog(@"%@", cur_road);
     
-    NSString *addr = [NSString stringWithFormat: @"%@, %@, %@, %@, %@, %@ : %@, %@ ", name, thoroughfare, locality, state, country, postalCode, latitude, longitude];
-    NSLog(@"%@", thoroughfare);
+    // last_longitude/latitude have been initialized
+    if (initialized_coord) {
+        // how far to look left and right
+        int left_right_multiplier = 2;
+        // how far to look straight ahead
+        int forward_multiplier = 10;
+        
+        float delta_long = (here.longitude - last_longitude);
+        float delta_lat  = (here.latitude - last_latitude);
+        
+        // look ahead by 5x the distance we've traveled (~4m for desired of 10)
+        float forward_long = forward_multiplier * delta_long + here.longitude;
+        float forward_lat = forward_multiplier * delta_lat + here.latitude;
+        
+        float left_long = forward_long - left_right_multiplier * delta_lat;
+        float left_lat = forward_lat + left_right_multiplier * delta_long;
+        
+        float right_long = forward_long + left_right_multiplier * delta_lat;
+        float right_lat = forward_lat - left_right_multiplier * delta_long;
+        
+        CLLocation *left_c = [[CLLocation alloc] initWithLatitude:left_lat longitude:left_long];
+        CLLocation *right_c = [[CLLocation alloc] initWithLatitude:right_lat longitude:right_long];
+        
+#ifdef DEBUG_lookahead
+        NSLog(@"forward %f %f ", forward_lat, forward_long);;
+        NSLog(@"left %f %f ", left_c.coordinate.latitude, left_c.coordinate.longitude);
+        NSLog(@"right %f %f ", right_c.coordinate.latitude, right_c.coordinate.longitude);
+#endif
+        
+        // reverse lookup our projected point to the left
+        [geocoder_left reverseGeocodeLocation:left_c completionHandler:^(NSArray *placemarks, NSError *error)
+         {
+             if (error == nil && ([placemarks count] > 0))
+             {
+                 placemark_left = [placemarks lastObject];
+                 
+             } else
+             {
+                 NSLog(@"loc bug %@", error.debugDescription);
+             }
+         }];
+        NSString *left_name = placemark_left.thoroughfare;
+        if(![left_name isEqualToString:cur_road]) {
+            left_road = left_name;
+#ifdef DEBUG_lookahead
+            NSLog(@"left name: %@", left_name);
+#endif
+        }
+        
+        // reverse lookup our projected point to the right
+        [geocoder_right reverseGeocodeLocation:right_c completionHandler:^(NSArray *placemarks, NSError *error)
+         {
+             if (error == nil && ([placemarks count] > 0))
+             {
+                 placemark_right = [placemarks lastObject];
+                 
+             } else
+             {
+                 NSLog(@"loc bug %@", error.debugDescription);
+             }
+         }];
+        NSString *right_name = placemark_right.thoroughfare;
+        if (![right_name isEqualToString:cur_road]) {
+            right_road = right_name;
+#ifdef DEBUG_lookahead
+            NSLog(@"right name: %@", right_name);
+#endif
+        }
+        
+#ifdef DEBUG_lookahead
+        NSLog(@"%@ %@ %@", cur_road, left_name, right_name);
+#endif
+    }
+    
+    last_longitude = here.longitude;
+    last_latitude = here.latitude;
+    initialized_coord = true;
 }
 
 - (NSString *)getString
