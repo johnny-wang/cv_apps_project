@@ -103,7 +103,7 @@ We worked on five submodule of the App. They are:
 We did this work on a still image running on Xcode’s iPad simulator. The region of interest for the app is the vanishing point near the center of the image. It will use this to then vertically locate the lower half of the image. This will crop out the part that is noisy for edge detection. Then Canny Edge Detection is used to extract the lane markings and road curb. After canny edge detection, Hough Transformation is used to extract the lines in the image. 
 To get the correct the lane edge, we filter out the line that is close to horizontal line. We take the left-most line and the right-most line as our road margin. From this road margin, we estimate the target projection area and shape of the road name. Figure 1 shows the temporary result of the project. 
 
- ![Road Name](/images/road_name.png)
+ ![Road Name](/images/homography_still_markup.jpg)
 **Figure 1**: Lane detection, homography estimation, and projection.
 
 Beside the algorithm prototype, we also studied the Avfoundation framework to work with live video data.  
@@ -126,3 +126,6 @@ Although these goals are the same as our original proposal, we realize that the 
 
 ####Final Result
 For our final presentation, we plan to have a video of the iPad in use (in a car) and overlaying the street name in real-time. As mentioned in Section 3, we may not achieve the real-time and have a system running on pre-recorded video instead.
+
+[Video demo of our completed project](https://www.youtube.com/watch?v=FAgfQbRue6g)
+
