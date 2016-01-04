@@ -28,12 +28,14 @@ To implement this project, several computer vision technologies will be involved
 1.  Automated homography estimation
 Our goal is to create a natural projection of the road name when people are using this device. **Figure 1** is a screenshot from Google Street View, which is a still-image of a location. We want to achieve such effect in real-time. This means lane detection and inverse perspective mapping technologies are required.
 ![Street View](/images/street_view.png)
+
 **Figure 1**: Ideal homography projection result on the map (the "Forbes Ave.").
 
 
 2.   Image pixel-based segmentation/classification
 When the car drives to an intersection, it should detect all the side road/ramp and mark them correctly. **Figure 2** shows a complex intersection. It has four different directions that the driver can drive to. In our App, we want to mark them all correctly. To achieve such function, the software should first classify the part of the road surface in the image. Then the software should analyze the geometric relationship between different parts of road and mark them accordingly.
 ![Complex Intersection](/images/complex_intersection.png)
+
 **Figure 2**: A complex intersection.
 
 
@@ -101,10 +103,10 @@ We worked on five submodule of the App. They are:
 5. lane detection. 
 
 We did this work on a still image running on Xcode’s iPad simulator. The region of interest for the app is the vanishing point near the center of the image. It will use this to then vertically locate the lower half of the image. This will crop out the part that is noisy for edge detection. Then Canny Edge Detection is used to extract the lane markings and road curb. After canny edge detection, Hough Transformation is used to extract the lines in the image. 
-To get the correct the lane edge, we filter out the line that is close to horizontal line. We take the left-most line and the right-most line as our road margin. From this road margin, we estimate the target projection area and shape of the road name. Figure 1 shows the temporary result of the project. 
+To get the correct the lane edge, we filter out the line that is close to horizontal line. We take the left-most line and the right-most line as our road margin. From this road margin, we estimate the target projection area and shape of the road name. **Figure 3** shows the temporary result of the project. 
 
  ![Road Name](/images/homography_still_markup.jpg)
-**Figure 1**: Lane detection, homography estimation, and projection.
+**Figure 3**: Lane detection, homography estimation, and projection.
 
 Beside the algorithm prototype, we also studied the Avfoundation framework to work with live video data.  
 
@@ -127,5 +129,50 @@ Although these goals are the same as our original proposal, we realize that the 
 ####Final Result
 For our final presentation, we plan to have a video of the iPad in use (in a car) and overlaying the street name in real-time. As mentioned in Section 3, we may not achieve the real-time and have a system running on pre-recorded video instead.
 
-[Video demo of our completed project](https://www.youtube.com/watch?v=FAgfQbRue6g)
+----------------------------------------------------------------------------------------
+
+Final Result
+============
+
+We were able to achieve all of our goals:
+
+1. Automated homography. We filtered the strongest Hough lines over ten previous frames. This gave us a smooth and stable homography boundary as the left lane marker varied or briefly vanish over time.
+
+2. Road name projection. We heuristically selected our name projection to be 75 and 87.5 percent of the image height. (see **Figure 4**).
+
+![Road name projection](/images/lane_proj.jpg)
+
+**Figure 4**: Road name projection area.
+
+3. Geographic Information System (GIS). We successfully utilized the iOS Core Location framework to query the current street name. **Figure 5** shows the longitude and latitude that was returned and cross-verified with Google Maps.
+
+![GIS street name](/images/GPS_coord_combined.jpg)
+
+**Figure 5**: Longitude and latitude used to query the street name, which was then cross-verified with Google Maps.
+
+4. Cross street lookup. Our research pointed to using Google Maps API fusing the information with inertial data to identify surrounding streets. However, to save time and maintain the scope of the project, we simply used the same GIS lookup procedure as before but projected our street lookup "forward and to the left" and "forward and to the right". We can do this because we know our current and last position, and thus the directino of travel. Figures 6-10 shows the street lookahead is accomplished.
+
+![Street lookahead straight](/images/lookahead10x_leftright2x_straight.jpg)
+
+**Figure 6**: Street lookahead projected straight ahead.
+
+![Street lookahead left](/images/lookahead10x_leftright2x_left.jpg)
+
+**Figure 7**: Street lookahead projected to the left.
+
+![Street lookahead right](/images/lookahead10x_leftright2x_right.jpg)
+
+**Figure 8**: Street lookahead projected to the right.
+
+![Street name visualization](/images/road.png)
+
+**Figure 9**: How the street name is visualized.
+
+![Street name lookahead](/images/street_lookahead.jpg)
+
+**Figure 10**: Actual street name lookahead during use.
+
+
+
+[Youtube video of our completed project!](https://www.youtube.com/watch?v=FAgfQbRue6g)
 
