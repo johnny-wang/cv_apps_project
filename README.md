@@ -140,13 +140,13 @@ We were able to achieve all of our goals:
 
 2. Road name projection. We heuristically selected our name projection to be 75 and 87.5 percent of the image height. (see **Figure 4**).
 
-<img src="/images/lane_proj.jpg" width="50%">
+<img src="/images/lane_proj.jpg" width="60%">
 
 **Figure 4**: Road name projection area.
 
 3. Geographic Information System (GIS). We successfully utilized the iOS Core Location framework to query the current street name. **Figure 5** shows the longitude and latitude that was returned and cross-verified with Google Maps.
 
-<img src="/images/GPS_coord_combined.jpg" width="50%">
+<img src="/images/GPS_coord_combined.jpg" width="70%">
 
 **Figure 5**: Longitude and latitude used to query the street name, which was then cross-verified with Google Maps.
 
@@ -164,14 +164,20 @@ We were able to achieve all of our goals:
 
 **Figure 8**: Street lookahead projected to the right.
 
-<img src="/images/road.png" width="50%">
+<img src="/images/road.png" width="75%">
 
 **Figure 9**: How the street name is visualized.
 
-<img src="/images/street_lookahead.jpg" width="50%">
+<img src="/images/street_lookahead.jpg">
 
 **Figure 10**: Actual street name lookahead during use.
 
+
+An unexpected side-bonus is that our application functions perfectly during night time usage! (See **Figure 11**.)
+
+<img src="/images/night.JPG" width="50%">
+
+**Figure 11**: The application functions well during low-light night time usage.
 
 
 [Youtube video of our completed project!](https://www.youtube.com/watch?v=FAgfQbRue6g)
