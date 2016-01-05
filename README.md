@@ -173,11 +173,11 @@ We were able to achieve all of our goals:
 **Figure 10**: Actual street name lookahead during use.
 
 
-An unexpected side-bonus is that our application functions perfectly during night time usage! (See **Figure 11**.)
+Our application functions perfectly during low-light usage! (See **Figure 11**.)
 
 <img src="/images/night.JPG" width="50%">
 
-**Figure 11**: The application functions well during low-light night time usage.
+**Figure 11**: The application functions well during night time usage.
 
 
 [Youtube video of our completed project!](https://www.youtube.com/watch?v=FAgfQbRue6g)
