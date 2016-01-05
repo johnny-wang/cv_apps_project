@@ -140,8 +140,7 @@ We were able to achieve all of our goals:
 
 2. Road name projection. We heuristically selected our name projection to be 75 and 87.5 percent of the image height. (see **Figure 4**).
 
-![Road name projection](/images/lane_proj.jpg)
-<img src="/images/lane_proj.jpg" width="50">
+<img src="/images/lane_proj.jpg" width="50%">
 
 **Figure 4**: Road name projection area.
 
