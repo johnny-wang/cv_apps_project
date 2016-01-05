@@ -146,29 +146,29 @@ We were able to achieve all of our goals:
 
 3. Geographic Information System (GIS). We successfully utilized the iOS Core Location framework to query the current street name. **Figure 5** shows the longitude and latitude that was returned and cross-verified with Google Maps.
 
-![GIS street name](/images/GPS_coord_combined.jpg)
+<img src="/images/GPS_coord_combined.jpg" width="50%">
 
 **Figure 5**: Longitude and latitude used to query the street name, which was then cross-verified with Google Maps.
 
 4. Cross street lookup. Our research pointed to using Google Maps API fusing the information with inertial data to identify surrounding streets. However, to save time and maintain the scope of the project, we simply used the same GIS lookup procedure as before but projected our street lookup "forward and to the left" and "forward and to the right". We can do this because we know our current and last position, and thus the directino of travel. Figures 6-10 shows the street lookahead is accomplished.
 
-![Street lookahead straight](/images/lookahead10x_leftright2x_straight.jpg)
+<img src="/images/lookahead10x_leftright2x_straight.jpg" width="50%">
 
 **Figure 6**: Street lookahead projected straight ahead.
 
-![Street lookahead left](/images/lookahead10x_leftright2x_left.jpg)
+<img src="/images/lookahead10x_leftright2x_left.jpg" width="50%">
 
 **Figure 7**: Street lookahead projected to the left.
 
-![Street lookahead right](/images/lookahead10x_leftright2x_right.jpg)
+<img src="/images/lookahead10x_leftright2x_right.jpg" width="50%">
 
 **Figure 8**: Street lookahead projected to the right.
 
-![Street name visualization](/images/road.png)
+<img src="/images/road.png" width="50%">
 
 **Figure 9**: How the street name is visualized.
 
-![Street name lookahead](/images/street_lookahead.jpg)
+<img src="/images/street_lookahead.jpg" width="50%">
 
 **Figure 10**: Actual street name lookahead during use.
 
